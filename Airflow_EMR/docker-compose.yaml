@@ -1,5 +1,5 @@
 version: '3'
-services:
+services: # Credits to Stan Taov for creating this docker-compose file
   postgres:
     image: postgres:13
     environment:
