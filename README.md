@@ -73,6 +73,6 @@ This page outlines how to use the files I've provided so that you could use it t
 awsathena+rest://{aws access key}:{aws secret access key}@athena.{aws region}.amazonaws.com/?s3_staging_dir=s3://{output s3 bucket}/superset_metadata&work_group=primary
   - Add the necessary datasets in Superset
   - Build dashboards to your heart's content
-## 10. Remove AWS Artifacts
+## 10. Remove AWS Artifacts (optional)
   - Once you are done with the entire project, go into the Remove_AWS_Artifacts folder.
   - Then run "chmod +x remove_aws_artifacts.sh" and then run remove_aws_artifacts.sh
