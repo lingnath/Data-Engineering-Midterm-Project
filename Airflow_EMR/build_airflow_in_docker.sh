@@ -50,9 +50,18 @@ if [ $RC1 != 0 ]; then
     exit 1
 fi
 
-# Removing the config file to prevent confusion with the config file in the main folder. 
-# We want to make sure there is only one source of truth
+# Removing the config file to prevent confusion with the config file in the main folder
 rm config_file.toml
 
 # Copying the dag python file into the dags folder so that Airflow detects and registers it
 sudo cp dag_run.py dags/
+
+# Copying the .env file into the docker container
+docker_container_name=${airflow_name_prefix}_scheduler_1
+docker cp ../.env ${docker_container_name}:/opt/airflow/.env
+
+# Copying the airflow set up file into the docker container
+docker cp airflow_ui_setup.sh ${docker_container_name}:/opt/airflow/airflow_ui_setup.sh
+
+# Executing the airflow set up file 
+docker exec ${docker_container_name} ./airflow_ui_setup.sh
