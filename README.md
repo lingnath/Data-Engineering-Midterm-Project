@@ -58,7 +58,7 @@ This page outlines how to use the files I've provided so that you could use it t
 ## 8. Setup and Run Airflow
   - If you don't have Airflow set up in your EC2 instance,
     - Please go into the Airflow_EMR folder, run "chmod +x build_airflow_in_docker.sh" then run build_airflow_in_docker.sh
-    - Otherwise just enter docker-compose up -d in the Airflow_EMR folder
+  - Otherwise just enter docker-compose up -d in the Airflow_EMR folder
   - Create a port forwarding connection for port 8080 (optional if you want to access locally)
   - In your browser url, enter {EC2 Public IPv4 address}:8080. This will lead you to the Airflow UI
   - In the Airflow_EMR folder, run "chmod +x trigger_airflow.sh"
