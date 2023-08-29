@@ -60,6 +60,9 @@ sudo cp dag_run.py dags/
 docker_container_name=${airflow_name_prefix}_scheduler_1
 docker cp ../.env ${docker_container_name}:/opt/airflow/.env
 
+# Making the airflow set up file executable
+chmod +x airflow_ui_setup.sh
+
 # Copying the airflow set up file into the docker container
 docker cp airflow_ui_setup.sh ${docker_container_name}:/opt/airflow/airflow_ui_setup.sh
 
