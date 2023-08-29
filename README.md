@@ -61,8 +61,6 @@ This page outlines how to use the files I've provided so that you could use it t
     - Otherwise just enter docker-compose up -d in the Airflow_EMR folder
   - Create a port forwarding connection for port 8080 (optional if you want to access locally)
   - In your browser url, enter {EC2 Public IPv4 address}:8080. This will lead you to the Airflow UI
-  - In airflow, go to dags section. Then unpause the dag
-  - Then go to Connections page and create a new Amazon Web Services connection with "Connection Id" named "aws_conn". Enter your access key and secret access key accordingly. Afterwards, in the "Extra" field, enter {"region_name": "{AWS region you set in config_file.toml}"}
   - In the Airflow_EMR folder, run "chmod +x trigger_airflow.sh"
   - Then run trigger_airflow.sh
 ## 9. Setup and Run Superset
