@@ -1,7 +1,7 @@
 #!/bin/bash
 
-function_name=$(cat ../config_file.toml | grep 'lambda_function_name' | awk -F"=" '{print $2}' | tr -d "'")
-region=$(cat ../config_file.toml | grep 'region' | awk -F"=" '{print $2}' | tr -d "'")
+function_name=$(cat ../config_file.toml | grep 'lambda_function_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+region=$(cat ../config_file.toml | grep 'region' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 
 # Removes the lambda function
 aws lambda delete-function \
