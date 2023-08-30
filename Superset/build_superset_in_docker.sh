@@ -4,7 +4,7 @@
 # Or if you want to rebuild another image for a new container. Otherwise, just run the command
 # docker start {superset_container_name} and consequently docker stop {superset_container_name}
 # when starting and stopping Superset respectively
-superset_container_name=$(cat ../config_file.toml | grep 'container_name' | awk -F"=" '{print $2}' | tr -d "'")
+superset_container_name=$(cat ../config_file.toml | grep 'container_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 
 docker pull stantaov/superset-athena:0.0.1
 # Setting the port to be 8088 so that it doesn't conflict with port 8080 that Airflow runs on
