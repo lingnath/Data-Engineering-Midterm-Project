@@ -1,6 +1,6 @@
 #!/bin/bash
 
-lambda_role_name=$(cat ../config_file.toml | grep 'lambda_role_name' | awk -F"=" '{print $2}' | tr -d "'")
+lambda_role_name=$(cat ../config_file.toml | grep 'lambda_role_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 
 # Detach lambda basic execution policy
 aws iam detach-role-policy \
