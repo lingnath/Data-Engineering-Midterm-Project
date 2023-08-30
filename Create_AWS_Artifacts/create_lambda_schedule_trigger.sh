@@ -1,9 +1,9 @@
 #!/bin/bash
 
-lambda_schedule_rule_name=$(cat ../config_file.toml | grep 'lambda_schedule_rule_name' | awk -F"=" '{print $2}' | tr -d "'")
-aws_region=$(cat ../config_file.toml | grep 'region' | awk -F"=" '{print $2}' | tr -d "'")
-account_id=$(cat ../config_file.toml | grep 'account_id' | awk -F"=" '{print $2}' | tr -d "'")
-lambda_function_name=$(cat ../config_file.toml | grep 'lambda_function_name' | awk -F"=" '{print $2}' | tr -d "'")
+lambda_schedule_rule_name=$(cat ../config_file.toml | grep 'lambda_schedule_rule_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+aws_region=$(cat ../config_file.toml | grep 'region' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+account_id=$(cat ../config_file.toml | grep 'account_id' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+lambda_function_name=$(cat ../config_file.toml | grep 'lambda_function_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 
 # Create event rule trigger in Amazon Eventbridge so that Lambda could be invoked at a specific time interval
 aws events put-rule \
