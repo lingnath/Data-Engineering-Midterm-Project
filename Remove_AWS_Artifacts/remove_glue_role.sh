@@ -1,6 +1,6 @@
 #!/bin/bash
 
-glue_role_name=$(cat ../config_file.toml | grep 'glue_role_name' | awk -F"=" '{print $2}' | tr -d "'")
+glue_role_name=$(cat ../config_file.toml | grep 'glue_role_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 
 # Detach glue service role policy (we must detach policies first before we can delete the IAM role)
 aws iam detach-role-policy \
