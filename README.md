@@ -5,7 +5,7 @@ This page outlines how to use the files I've provided so that you could use it t
 ## 1. AWS setup
   - Create AWS account
   - Create IAM user with following policies attached
-    - S3FullAccess
+    - AmazonS3FullAccess
     - AmazonEC2FullAccess
     - AWSLambda_FullAccess
     - IAMFullAccess
