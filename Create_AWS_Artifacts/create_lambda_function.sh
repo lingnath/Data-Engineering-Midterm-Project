@@ -1,12 +1,12 @@
 #!/bin/bash
 
-function_name=$(cat ../config_file.toml | grep 'lambda_function_name' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-input_s3_bucket=$(cat ../config_file.toml | grep 's3_bucket_input_and_script' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-lambda_role_name=$(cat ../config_file.toml | grep 'lambda_role_name' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-region=$(cat ../config_file.toml | grep 'region' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-account_id=$(cat ../config_file.toml | grep 'account_id' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-lambda_layer_name=$(cat ../config_file.toml | grep 'lambda_layer_name' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-lambda_layer_version=$(cat ../config_file.toml | grep 'lambda_layer_version' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
+function_name=$(cat ../config_file.toml | grep 'lambda_function_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+input_s3_bucket=$(cat ../config_file.toml | grep 's3_bucket_input_and_script' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+lambda_role_name=$(cat ../config_file.toml | grep 'lambda_role_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+region=$(cat ../config_file.toml | grep 'region' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+account_id=$(cat ../config_file.toml | grep 'account_id' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+lambda_layer_name=$(cat ../config_file.toml | grep 'lambda_layer_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+lambda_layer_version=$(cat ../config_file.toml | grep 'lambda_layer_version' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 
 # Zipping all code (includes the python script, config toml, and .env files)
 zip lambda_code.zip lambda_function.py ../config_file.toml ../.env
