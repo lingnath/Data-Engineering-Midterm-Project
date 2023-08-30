@@ -1,7 +1,7 @@
 #!/bin/bash
-input_s3_bucket=$(cat ../config_file.toml | grep 's3_bucket_input_and_script' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-lambda_layer_name=$(cat ../config_file.toml | grep 'lambda_layer_name' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-region=$(cat ../config_file.toml | grep 'region' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
+input_s3_bucket=$(cat ../config_file.toml | grep 's3_bucket_input_and_script' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+lambda_layer_name=$(cat ../config_file.toml | grep 'lambda_layer_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+region=$(cat ../config_file.toml | grep 'region' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 dir="lambda_layer"
 
 # Create the directory for the Lambda Layer
