@@ -1,10 +1,10 @@
 #!/bin/bash
 
-glue_role_name=$(cat ../config_file.toml | grep 'glue_role_name' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-athena_db=$(cat ../config_file.toml | grep 'athena_db' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-s3_bucket_output=$(cat ../config_file.toml | grep 's3_bucket_output' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-aws_region=$(cat ../config_file.toml | grep 'region' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
-glue_crawler_name=$(cat ../config_file.toml | grep 'glue_crawler_name' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
+glue_role_name=$(cat ../config_file.toml | grep 'glue_role_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+athena_db=$(cat ../config_file.toml | grep 'athena_db' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+s3_bucket_output=$(cat ../config_file.toml | grep 's3_bucket_output' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+aws_region=$(cat ../config_file.toml | grep 'region' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
+glue_crawler_name=$(cat ../config_file.toml | grep 'glue_crawler_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 
 # Create a Glue crawler for each of the tables (calendar, fact, product, and store tables)
 for table in calendar fact product store;
