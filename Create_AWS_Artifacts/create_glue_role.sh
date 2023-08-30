@@ -1,6 +1,6 @@
 #!/bin/bash
 
-glue_role_name=$(cat ../config_file.toml | grep 'glue_role_name' | awk -F"=" '{print $2}' | tr -d "'")
+glue_role_name=$(cat ../config_file.toml | grep 'glue_role_name' | awk -F"=" '{print $2}' | tr -d "'" | tr -d " ")
 
 # Create IAM role 
 aws iam create-role \
