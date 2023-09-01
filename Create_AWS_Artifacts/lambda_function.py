@@ -90,8 +90,8 @@ def lambda_handler(event, context):
         data = json.dumps({'conf':{a:b for a,b in zip(table_name, required_file_url)}})
         print(data)
     # send signal to Airflow    
-        endpoint=f'http://{ec2_ip_address}:8080/api/v1/dags/{dag_name}/dagRuns'
-        user_credentials=f'{os.getenv("AIRFLOW_USERNAME")}:{os.getenv("AIRFLOW_PASSWORD")}'
+        endpoint = f'http://{ec2_ip_address}:8080/api/v1/dags/{dag_name}/dagRuns'
+        user_credentials = f'{os.getenv("AIRFLOW_USERNAME")}:{os.getenv("AIRFLOW_PASSWORD")}'
         subprocess.run([
             'curl', 
             '-X',
