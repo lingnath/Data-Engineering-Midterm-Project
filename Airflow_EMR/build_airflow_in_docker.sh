@@ -3,7 +3,8 @@
 # Only run this script if either this is your first time setting up this docker image for Airflow
 # or if you are planning to rebuild the image again. Otherwise, there is no need to run this script.
 # Therefore, if you've already built this particular image and have no intentions of rebuilding it again, 
-# just run "docker-compose up -d" to start Airflow and "docker-compose down" to shut it down
+# in the Airflow_EMR folder, just run "docker-compose up -d" to start Airflow and "docker-compose down" 
+# to shut it down
 
 # Get the airflow name prefix so that we can automatically get the container name later 
 # without manually typing it in
