@@ -56,6 +56,12 @@ rm config_file.toml
 # Copying the dag python file into the dags folder so that Airflow detects and registers it
 sudo cp dag_run.py dags/
 
+# Restarting Airflow so that the DAG is reflected in the UI once we unpause it
+docker-compose down
+echo "Waiting 10 seconds before restarting the Airflow Docker container"
+sleep 10
+docker-compose up -d
+
 # Copying the .env file into the docker container
 docker_container_name=${airflow_name_prefix}_scheduler_1
 docker cp ../.env ${docker_container_name}:/opt/airflow/.env
