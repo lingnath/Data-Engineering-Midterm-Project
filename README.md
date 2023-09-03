@@ -56,9 +56,7 @@ This page outlines how to use the files I've provided so that you could use it t
   - In Snowflake console run the following Snowflake files in this order: load_data_to_snowflake.sql -> daily_load_to_s3_automated.sql
     - **NOTE:** Because the daily_load_to_s3_automated.sql is set to load at 4am EST you will not receive data in the input bucket immediately. Hence Airflow will not trigger. If you want to run Airflow now, change the task schedule in the daily_load_to_s3_automated.sql file to 'USING CRON * * * * * America/New_York' so that you receive data in the input bucket in a minute from now. The CRON expression "* * * * *" means that the task will run every minute. Airflow will only activate if the most current tables are in the data folder of the input bucket. However, make sure to change the task schedule in the daily_load_to_s3_automated.sql file to 'USING CRON 0 4 * * * America/New_York' and re-activate it again after you receive the data in the input bucket. The reason we change the cron frequency back to '0 4 * * *' is because running the task every minute will be very costly in the long run in Snowflake. 
 ## 8. Setup and Run Airflow
-  - If you don't have Airflow set up in your EC2 instance,
-    - Please go into the Airflow_EMR folder, run "chmod +x build_airflow_in_docker.sh" then run build_airflow_in_docker.sh
-  - Otherwise just enter docker-compose up -d in the Airflow_EMR folder
+  - Please go into the Airflow_EMR folder, run "chmod +x build_airflow_in_docker.sh" then run build_airflow_in_docker.sh
   - Create a port forwarding connection for port 8080 (optional if you want to access locally)
   - In your browser url, enter {EC2 Public IPv4 address}:8080. This will lead you to the Airflow UI
   - In the Airflow_EMR folder, run "chmod +x trigger_airflow.sh"
