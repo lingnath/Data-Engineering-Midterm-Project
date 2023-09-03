@@ -61,7 +61,6 @@ This page outlines how to use the files I've provided so that you could use it t
   - Otherwise just enter docker-compose up -d in the Airflow_EMR folder
   - Create a port forwarding connection for port 8080 (optional if you want to access locally)
   - In your browser url, enter {EC2 Public IPv4 address}:8080. This will lead you to the Airflow UI
-  - **Sometimes, the DAG may not even show up in the Airflow UI console.** This is usually because the Airflow UI has not been refreshed. In this case enter docker-compose down to shut down the Airflow container and then run docker-compose up -d to restart it. This is to refresh the Airflow UI. Then in your browser url, enter {EC2 Public IPv4 address}:8080 again. In the Airflow UI, click on the DAGs tab and manually unpause the DAG.
   - In the Airflow_EMR folder, run "chmod +x trigger_airflow.sh"
   - Then run trigger_airflow.sh
 ## 9. Setup and Run Superset
