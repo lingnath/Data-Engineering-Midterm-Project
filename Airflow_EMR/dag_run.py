@@ -51,31 +51,31 @@ DEFAULT_ARGS = {
 # Creating the configurations for the glue crawlers (a separate crawler exists for the calendar, 
 # product, store, and fact tables)
 cal_config = {
-    "Name":f"{glue_crawler_name}_calendar",
+    "Name": f"{glue_crawler_name}_calendar",
     "Role": glue_role_name,
-    "DatabaseName":athena_db,
-    'Targets':{'S3Targets' : [{'Path': f"s3://{s3_output_bucket}/data/calendar/" }]}
+    "DatabaseName": athena_db,
+    'Targets': {'S3Targets' : [{'Path': f"s3://{s3_output_bucket}/data/calendar/" }]}
 }
 
 fact_config = {
-    "Name":f"{glue_crawler_name}_fact",
+    "Name": f"{glue_crawler_name}_fact",
     "Role": glue_role_name,
-    "DatabaseName":athena_db,
-    'Targets':{'S3Targets' : [{'Path': f"s3://{s3_output_bucket}/data/fact/" }]}
+    "DatabaseName": athena_db,
+    'Targets': {'S3Targets' : [{'Path': f"s3://{s3_output_bucket}/data/fact/" }]}
 }
 
 product_config = {
-    "Name":f"{glue_crawler_name}_product",
+    "Name": f"{glue_crawler_name}_product",
     "Role": glue_role_name,
-    "DatabaseName":athena_db,
-    'Targets':{'S3Targets' : [{'Path': f"s3://{s3_output_bucket}/data/product/" }]}
+    "DatabaseName": athena_db,
+    'Targets': {'S3Targets' : [{'Path': f"s3://{s3_output_bucket}/data/product/" }]}
 }
 
 store_config = {
-    "Name":f"{glue_crawler_name}_store",
+    "Name": f"{glue_crawler_name}_store",
     "Role": glue_role_name,
-    "DatabaseName":athena_db,
-    'Targets':{'S3Targets' : [{'Path': f"s3://{s3_output_bucket}/data/store/" }]}
+    "DatabaseName": athena_db,
+    'Targets': {'S3Targets' : [{'Path': f"s3://{s3_output_bucket}/data/store/" }]}
 }
 
 # Creating the parameters to the EMR that will be created. This is a section to customize your EMR cluster
