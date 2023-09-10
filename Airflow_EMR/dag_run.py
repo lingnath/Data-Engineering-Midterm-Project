@@ -169,7 +169,7 @@ remove_emr_cluster = EmrTerminateJobFlowOperator(
         job_flow_id="{{ task_instance.xcom_pull('create_emr_cluster', key='return_value') }}",
         aws_conn_id='aws_conn',
         trigger_rule='all_done',
-        dag = dag
+        dag=dag
     )
 
 # Triggering the Glue Crawler to create schemas for the calendar, product, store and fact tables
