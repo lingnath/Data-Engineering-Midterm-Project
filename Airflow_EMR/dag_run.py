@@ -109,7 +109,7 @@ JOB_FLOW_OVERRIDES = {
 
 # Creating a function that passes the data from Lambda's API call to Airflow's tasks
 def retrieve_s3_files(**kwargs):
-    kwargs['ti'].xcom_push(key = 'data', value = {
+    kwargs['ti'].xcom_push(key='data', value={
                                                 'calendar': kwargs['dag_run'].conf['calendar'],
                                                 'inventory': kwargs['dag_run'].conf['inventory'],
                                                 'product': kwargs['dag_run'].conf['product'],
@@ -120,9 +120,9 @@ def retrieve_s3_files(**kwargs):
 # Initializing the dag
 dag = DAG(
     dag_name,
-    default_args = DEFAULT_ARGS,
-    dagrun_timeout = timedelta(hours=2),
-    schedule_interval = None
+    default_args=DEFAULT_ARGS,
+    dagrun_timeout=timedelta(hours=2),
+    schedule_interval=None
 )
 
 begin = DummyOperator(task_id="begin",
@@ -131,36 +131,36 @@ begin = DummyOperator(task_id="begin",
 
 # Creating a PythonOperator that utilizes the python function created above.
 # Retrieves the S3 URIs for each of the raw input tables
-parse_request = PythonOperator(task_id = 'parse_request',
-                                provide_context = True, # Airflow will pass a set of keyword arguments that can be used in your function
-                                python_callable = retrieve_s3_files,
-                                dag = dag
+parse_request = PythonOperator(task_id='parse_request',
+                                provide_context=True, # Airflow will pass a set of keyword arguments that can be used in your function
+                                python_callable=retrieve_s3_files,
+                                dag=dag
                                 ) 
 
 # Creating the EMR cluster
 create_emr_cluster = EmrCreateJobFlowOperator(
     task_id="create_emr_cluster",
     job_flow_overrides=JOB_FLOW_OVERRIDES,
-    aws_conn_id = "aws_conn",
-    dag = dag
+    aws_conn_id="aws_conn",
+    dag=dag
     )
 
 # Adding steps to the EMR cluster
 step_adder = EmrAddStepsOperator(
-    task_id = 'add_steps',
-    job_flow_id = "{{ task_instance.xcom_pull('create_emr_cluster', key='return_value') }}",
-    aws_conn_id = "aws_conn",
-    steps = SPARK_STEPS,
-    dag = dag
+    task_id='add_steps',
+    job_flow_id="{{ task_instance.xcom_pull('create_emr_cluster', key='return_value') }}",
+    aws_conn_id="aws_conn",
+    steps=SPARK_STEPS,
+    dag=dag
 )
 
 # Monitoring the steps of the EMR cluster
 step_checker = EmrStepSensor(
-    task_id = 'watch_step',
-    job_flow_id = "{{ task_instance.xcom_pull('create_emr_cluster', key='return_value') }}",
-    step_id = "{{ task_instance.xcom_pull('add_steps', key='return_value')[0] }}",
-    aws_conn_id = "aws_conn", 
-    dag = dag
+    task_id='watch_step',
+    job_flow_id="{{ task_instance.xcom_pull('create_emr_cluster', key='return_value') }}",
+    step_id="{{ task_instance.xcom_pull('add_steps', key='return_value')[0] }}",
+    aws_conn_id="aws_conn", 
+    dag=dag
 )
 
 # Removing the EMR cluster once the EMR job is completed
