@@ -175,27 +175,27 @@ remove_emr_cluster = EmrTerminateJobFlowOperator(
 # Triggering the Glue Crawler to create schemas for the calendar, product, store and fact tables
 run_glue_crawler_calendar = GlueCrawlerOperator(
         task_id="run_glue_crawler_calendar",
-        aws_conn_id= "aws_conn",
+        aws_conn_id="aws_conn",
         config=cal_config, 
         dag=dag      
     )
 run_glue_crawler_fact = GlueCrawlerOperator(
         task_id="run_glue_crawler_fact",
-        aws_conn_id= "aws_conn",
+        aws_conn_id="aws_conn",
         config=fact_config, 
         dag=dag             
     )
 
 run_glue_crawler_product = GlueCrawlerOperator(
         task_id="run_glue_crawler_product",
-        aws_conn_id= "aws_conn",
+        aws_conn_id="aws_conn",
         config=product_config, 
         dag=dag             
     )
 
 run_glue_crawler_store = GlueCrawlerOperator(
         task_id="run_glue_crawler_store",
-        aws_conn_id= "aws_conn",
+        aws_conn_id="aws_conn",
         config=store_config, 
         dag=dag             
     )
