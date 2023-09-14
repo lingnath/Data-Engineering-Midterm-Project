@@ -34,7 +34,11 @@ This page outlines how to use the files I've provided so that you could use it t
 ## 4. Install Packages in EC2 Ubuntu
   - Run "chmod +x <script>" for each of the .sh scripts in the Software_Installations folder
   - Run the scripts within the Software_Installations folder in this order: install_packages.sh -> install_docker.sh -> install_docker_compose.sh
-  - If you haven't done so already, run "aws configure" in the command line. Then enter your credentials, such as your newly generated access key and secret access key for the user you created, so that you can run the scripts on the EC2 command line without there being permission errors.
+  - If you haven't done so already, run "aws configure" in the command line so that you can run the scripts on the EC2 command line without there being permission errors. Enter the following:
+    - AWS Access Key ID [None]: {access key}
+    - AWS Secret Access Key [None]: {secret access key}
+    - Default region name [None]: {aws region your EC2 is in}
+    - Default output format [None]: json
 ## 5. Set up config files
   - Create a .env file both in the main folder and the Airflow_EMR subfolder.
       - For the .env file in the main folder, the structure looks like this:
