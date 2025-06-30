@@ -1,7 +1,10 @@
 import os
 import boto3
 from dotenv import load_dotenv
+from botocore import UNSIGNED
+from botocore.config import Config
 import toml
+import time
 
 # Loading the config toml file and .env file so that we can gather the variables from the respective files
 load_dotenv('../.env')
@@ -28,10 +31,30 @@ s3_client.create_bucket(
     CreateBucketConfiguration={'LocationConstraint': aws_region} 
 )
 
-# Create a data folder for the input bucket where the raw tables (from Snowflake) can reside
+# Create a data folder for the input bucket where the raw tables can reside
 s3_client.put_object(
     Bucket=s3_bucket_input_and_script,
     Key=('data/'))
+
+# Create an anonymous S3 client (no credentials) that we can download the public csv files with
+s3_client_anon = boto3.client('s3', config=Config(signature_version=UNSIGNED))
+
+# Get csv files from public bucket I shared
+s3_bucket_public = 'wcd-de-midterm-nl-public'
+local_download_dir = 'raw_csv_files'
+os.makedirs(local_download_dir, exist_ok=True)
+response_anon = s3_client_anon.list_objects_v2(Bucket=s3_bucket_public)
+for obj in response_anon.get('Contents', []):
+    key = obj['Key']
+    local_file_path = os.path.join(local_download_dir, os.path.basename(key))
+    
+    # Download the csv file from public bucket
+    s3_client_anon.download_file(s3_bucket_public, key, local_file_path)
+    print(f"Downloaded: {key} -> {local_file_path}")
+
+    # Upload csv file to s3
+    renamed_csv_file = local_file_path.split("/")[-1].replace('mid', time.strftime("%Y-%m-%d"))
+    s3_client.upload_file(local_file_path, s3_bucket_input_and_script, f'data/{renamed_csv_file}')
 
 # Upload pyspark script to input bucket
 s3_client.upload_file('Spark_ETL.py', s3_bucket_input_and_script, 'scripts/Spark_ETL.py')
