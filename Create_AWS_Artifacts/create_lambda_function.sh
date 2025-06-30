@@ -20,7 +20,7 @@ aws lambda create-function \
  --region ${region} \
  --code S3Bucket=${input_s3_bucket},S3Key="scripts/lambda_code.zip" \
  --handler lambda_function.lambda_handler \
- --runtime python3.7 \
+ --runtime python3.12 \
  --role arn:aws:iam::${account_id}:role/${lambda_role_name} \
  --layers arn:aws:lambda:${region}:${account_id}:layer:${lambda_layer_name}:${lambda_layer_version} \
  --timeout 30
