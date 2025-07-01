@@ -1,7 +1,11 @@
 version: '3'
-services: # Credits to Stan Taov for creating this docker-compose file
+services:
   postgres:
     image: postgres:13
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 5s
+      retries: 5
     environment:
       - POSTGRES_USER=airflow
       - POSTGRES_PASSWORD=airflow
@@ -45,4 +49,4 @@ services: # Credits to Stan Taov for creating this docker-compose file
     environment:
       - AIRFLOW__CORE__EXECUTOR=LocalExecutor
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow
-    command: scheduler
+    command: bash -c "while ! pg_isready -h postgres -U airflow; do sleep 1; done; airflow scheduler"
