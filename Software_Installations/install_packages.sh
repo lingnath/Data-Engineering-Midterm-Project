@@ -20,3 +20,4 @@ source python_env/bin/activate
 pip3 install boto3
 pip3 install python_dotenv
 pip3 install toml
+pip3 install cryptography
