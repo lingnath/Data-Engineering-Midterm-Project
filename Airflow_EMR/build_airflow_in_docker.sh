@@ -54,7 +54,7 @@ rm config_file.toml
 sudo cp dag_run.py dags/
 
 # Restarting Airflow so that the DAG is reflected in the UI once we unpause it
-docker-compose down
+docker-compose stop
 echo "Waiting 10 seconds before restarting the Airflow Docker container"
 sleep 10
 docker-compose up -d
