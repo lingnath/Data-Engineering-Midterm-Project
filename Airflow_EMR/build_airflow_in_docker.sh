@@ -30,6 +30,7 @@ docker-compose up -d postgres
 # Initialize database
 docker-compose run --rm webserver airflow db init
 
+# Start Webserver and Scheduler
 docker-compose up -d
 
 # Creating an account for Airflow so that we can login to access the UI
