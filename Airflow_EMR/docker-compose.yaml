@@ -42,7 +42,7 @@ services:
     build: .
     restart: always
     depends_on:
-      - webserver
+      - postgres
     volumes:
       - ./dags:/opt/airflow/dags
       - ./plugins:/opt/airflow/plugins
