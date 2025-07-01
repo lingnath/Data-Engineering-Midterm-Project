@@ -23,21 +23,14 @@ cp ../config_file.toml .
 
 # Build docker airflow image and start container
 docker-compose build
+
+# Starts postgresql only
+docker-compose up -d postgres
+
+# Initialize database
+docker-compose run --rm webserver airflow db init
+
 docker-compose up -d
-
-# Upgrades and initializes the Airflow database
-echo "Upgrading airflow database"
-docker exec -it ${airflow_name_prefix}_webserver_1 airflow db upgrade
-
-echo "Initializing airflow database"
-docker exec -it ${airflow_name_prefix}_webserver_1 airflow db init
-RC1=$?
-if [ $RC1 != 0 ]; then
-    echo "Failed to initialize airflow database"
-    echo "[ERROR:] RETURN CODE:  $RC1"
-    docker-compose down
-    exit 1
-fi
 
 # Creating an account for Airflow so that we can login to access the UI
 echo "Creating account for Airflow"
@@ -49,6 +42,9 @@ if [ $RC1 != 0 ]; then
     docker-compose down
     exit 1
 fi
+
+# Change ownership to ubuntu so that we can add and modify dags
+sudo chown -R ubuntu:ubuntu dags/
 
 # Removing the config file to prevent confusion with the config file in the main folder
 rm config_file.toml
