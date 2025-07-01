@@ -27,6 +27,7 @@ services:
       - AIRFLOW__CORE__LOAD_EXAMPLES=False
       - AIRFLOW__LOGGING__BASE_LOG_FOLDER=/home/airflow/logs
       - AIRFLOW__WEBSERVER__EXPOSE_CONFIG=True
+      - AIRFLOW__WEBSERVER__DAG_REFRESH_INTERVAL=30
       - AIRFLOW__API__AUTH_BACKENDS=airflow.api.auth.backend.basic_auth
 
     volumes:
