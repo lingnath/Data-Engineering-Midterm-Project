@@ -76,3 +76,14 @@ This page outlines how to use the files I've provided so that you could use it t
 ## 8. Remove AWS Artifacts (optional)
   - Once you are done with the entire project, go into the ```Remove_AWS_Artifacts folder```.
   - Then run ```chmod +x remove_aws_artifacts.sh``` and then run ```./remove_aws_artifacts.sh```
+## 9. EDA (Optional)
+If you want to analyze the raw data before the ETL step, below steps will instruct you on how to do so <br>
+  - Download this folder to your **local directory**. This part is meant to be done on your local machine so that you don't have to pay for an EC2 instance to run
+  - Make sure you have WSL or Ubuntu installed on your local machine
+  - Go to ```Local_EDA``` folder. Once you are in ```Local_EDA``` folder, run the following:
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+  - Click on the Jupyter Notebook link provided in the terminal
+  - Once you go to ```Spark_EDA.ipynb```, you can start analyzing the data by running each cell
