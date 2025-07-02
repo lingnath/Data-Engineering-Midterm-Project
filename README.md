@@ -1,6 +1,6 @@
 This page outlines how to use the files I've provided so that you could use it to create an end-to-end data pipeline
 <br>
-![image](https://github.com/lingnath/Data-Engineering-Midterm-Project/assets/32849838/55879ee9-38a8-41cf-ba7e-e701ba1fb754)
+![image](https://github.com/user-attachments/assets/a4a2178e-64a3-47ed-ad2e-82e5ba0f90b8)
 
 ## 1. AWS setup
   - Create AWS account
