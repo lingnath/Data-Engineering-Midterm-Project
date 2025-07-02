@@ -78,7 +78,7 @@ This page outlines how to use the files I've provided so that you could use it t
   - Then run ```chmod +x remove_aws_artifacts.sh``` and then run ```./remove_aws_artifacts.sh```
 ## 9. EDA (Optional)
 If you want to analyze the raw data before the ETL step, below steps will instruct you on how to do so <br>
-  - Download this folder to your **local directory**. This part is meant to be done on your local machine so that you don't have to pay for an EC2 instance to run
+  - Download the ```Local_EDA``` folder to your **local directory**. This part is meant to be done on your local machine so that you don't have to pay for an EC2 instance to run it
   - Make sure you have WSL or Ubuntu installed on your local machine
   - Go to ```Local_EDA``` folder. Once you are in ```Local_EDA``` folder, run the following:
 ```bash
