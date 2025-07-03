@@ -5,6 +5,9 @@ aws_region=$(cat ../config_file.toml | grep 'region' | awk -F "=" '{print $2}' |
 account_id=$(cat ../config_file.toml | grep 'account_id' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 lambda_function_name=$(cat ../config_file.toml | grep 'lambda_function_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 
+# Define Lambda Payload
+payload='{"action":"start"}'
+
 # Create event rule trigger in Amazon Eventbridge so that Lambda could be invoked at a specific time interval
 aws events put-rule \
  --name ${lambda_schedule_rule_name} \
@@ -29,6 +32,7 @@ echo "[" >> targets.json
 echo -e "\t{" >> targets.json
 echo '      "Id": "1",' >> targets.json
 echo '      "Arn":"'${lambda_function_arn}'"' >> targets.json
+# echo '    "Input": "'"${payload}"'"' >> targets.json
 echo -e "\t}" >> targets.json
 echo "]" >> targets.json
 
