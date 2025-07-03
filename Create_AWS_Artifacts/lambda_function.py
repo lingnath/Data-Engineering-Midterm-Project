@@ -12,7 +12,7 @@ def send_email(sender, recipient, aws_region):
     SUBJECT = "Files missing in S3 bucket"
 
     # The email body for recipients with non-HTML email clients.
-    BODY_TEXT = ("Files missing in AWS S3 bucket. Please check Snowflake task.")
+    BODY_TEXT = ("Files missing in AWS S3 bucket. Please check load to S3 task.")
 
     # The character encoding for the email.
     CHARSET = "UTF-8"
@@ -76,7 +76,7 @@ def lambda_handler(event, context):
     s3_file_list = [obj.split('/')[-1] for obj in s3_file_list_raw if obj!='data/']
     print('s3_file_list: ', s3_file_list)
     
-    # Getting the required files list, which consist of all the tables pushed today from Snowflake to S3
+    # Getting the required files list, which consist of all the tables pushed today from to S3
     datestr = time.strftime("%Y-%m-%d")
     required_file_list = [f'calendar_{datestr}.csv', f'inventory_{datestr}.csv', f'product_{datestr}.csv', f'sales_{datestr}.csv', f'store_{datestr}.csv']
     print('required_file_list: ', required_file_list)
