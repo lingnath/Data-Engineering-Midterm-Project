@@ -3,6 +3,7 @@
 # Please replace apt-get with yum if you are using Amazon AMI, which uses RHEL
 sudo apt-get update
 sudo apt-get install python3.12 -y
+sudo apt-get install jq
 # Install AWS CLI
 # sudo apt-get install awscli -y
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
