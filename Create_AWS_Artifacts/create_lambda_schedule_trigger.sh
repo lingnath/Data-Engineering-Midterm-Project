@@ -6,7 +6,7 @@ account_id=$(cat ../config_file.toml | grep 'account_id' | awk -F "=" '{print $2
 lambda_function_name=$(cat ../config_file.toml | grep 'lambda_function_name' | awk -F "=" '{print $2}' | tr -d "'" | tr -d " ")
 
 # Define Lambda Payload
-payload='{"action":"start"}'
+# payload='{"action":"start"}'
 
 # Create event rule trigger in Amazon Eventbridge so that Lambda could be invoked at a specific time interval
 aws events put-rule \
