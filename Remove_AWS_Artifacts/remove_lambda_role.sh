@@ -7,15 +7,15 @@ aws iam detach-role-policy \
  --role-name ${lambda_role_name} \
  --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
-# Detach S3 full access
+# Detach EC2 full access
 aws iam detach-role-policy \
  --role-name ${lambda_role_name} \
- --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
+ --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess
 
-# Detach SES full access
+# Detach SSM full access
 aws iam detach-role-policy \
  --role-name ${lambda_role_name} \
- --policy-arn arn:aws:iam::aws:policy/AmazonSESFullAccess
+ --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
 
  # Delete IAM role
 aws iam delete-role \
