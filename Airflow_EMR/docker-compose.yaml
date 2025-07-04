@@ -1,6 +1,7 @@
 version: '3'
 services:
   postgres:
+    restart: always
     image: postgres:13
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
