@@ -15,7 +15,7 @@ aws iam detach-role-policy \
 # Detach SSM full access
 aws iam detach-role-policy \
  --role-name ${lambda_role_name} \
- --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+ --policy-arn arn:aws:iam::aws:policy/AmazonSSMFullAccess
 
  # Delete IAM role
 aws iam delete-role \
