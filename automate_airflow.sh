@@ -2,7 +2,7 @@
 
 cd /home/ubuntu
 source airflow_env/bin/activate
-folder_name="airflow-docker"
+folder_name="Airflow_EMR"
 cd ${folder_name}
 
 # Start Airflow
