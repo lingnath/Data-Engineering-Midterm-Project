@@ -118,8 +118,13 @@ chmod +x setup.sh
   - Once you go to ```Spark_EDA.ipynb```, you can start analyzing the data by running each cell
 
 ## Run ETL
-There are 2 options. 
-1. We can run it manually by invoking the Lambda function we created by running ```python3 start_ec2_instance.py``` either on the EC2 instance or even locally in your ```/home/ubuntu``` directory as long as you have the ```.env```, ```config_file.toml``` files in the same directory, and you've run:
+There are 3 options. 
+1. We can run it manually in the EC2 on ```/home/ubuntu``` directory where you will need to run the following:
+```bash
+source python_env/bin/activate
+python3 start_ec2_instance.py
+```
+2. Run it locally on ```/home/ubuntu``` directory as long as you have the ```.env```, ```config_file.toml``` files in the same directory, and on your Linux CLI, you've run:
 ```bash
 sudo apt-get install python3.12 -y
 sudo apt install python3.12-venv
@@ -129,5 +134,4 @@ pip install boto3
 pip install python_dotenv
 pip install toml
 ```
-  on your Linux environment <br>
-2. Or we can wait until the cron schedule happens which will automatically run the ETL job.
+3. Or we can wait until the cron schedule happens which will automatically run the ETL job.
