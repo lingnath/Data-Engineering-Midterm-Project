@@ -20,4 +20,4 @@ aws iam attach-role-policy \
 # Attach SSM full access, so that Lambda can pass scripts into the EC2 instance
 aws iam attach-role-policy \
  --role-name ${lambda_role_name} \
- --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+ --policy-arn arn:aws:iam::aws:policy/AmazonSSMFullAccess
