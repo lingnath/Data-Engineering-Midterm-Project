@@ -1,111 +1,85 @@
 import json
 import boto3
 import time
-import os
-import subprocess
-from botocore.exceptions import ClientError
 import toml
 from dotenv import load_dotenv
+import os
 
-def send_email(sender, recipient, aws_region):
-    # The subject line for the email.
-    SUBJECT = "Files missing in S3 bucket"
+ec2 = boto3.client('ec2')
+ssm = boto3.client('ssm')
 
-    # The email body for recipients with non-HTML email clients.
-    BODY_TEXT = ("Files missing in AWS S3 bucket. Please check load to S3 task.")
+load_dotenv()
+dag_name = app_config['airflow']['dag_name']
+INSTANCE_ID = os.getenv('ec2_instance_id')
 
-    # The character encoding for the email.
-    CHARSET = "UTF-8"
-
-    # Create a new SES resource and specify a region.
-    client = boto3.client('ses', region_name=aws_region)
-
-    # Try to send the email.
+def start_instance(dag_name):
+    """Starts EC2 instance. Executes a .sh script in EC2 command line."""
     try:
-        #Provide the contents of the email.
-        response = client.send_email(
-            Destination={
-                'ToAddresses': [
-                    recipient,
-                ],
-            },
-            Message={
-                'Body': {
-                    'Text': {
-                        'Charset': CHARSET,
-                        'Data': BODY_TEXT,
-                    },
-                },
-                'Subject': {
-                    'Charset': CHARSET,
-                    'Data': SUBJECT,
-                },
-            },
-            Source=sender
+        response = ec2.start_instances(InstanceIds=[INSTANCE_ID])
+        print(f"Starting instance {INSTANCE_ID}: {response}")
+        
+        # Wait for the instance to start
+        waiter = ec2.get_waiter('instance_running')
+        waiter.wait(InstanceIds=[INSTANCE_ID])
+        print(f"Instance {INSTANCE_ID} is now running.")
 
+        print('Waiting for 30 seconds before we run ssm')
+        time.sleep(30)
+    except Exception as e:
+        print(f"Error with starting EC2 instance: {e}")
+
+    # Execute the command to run ./automate_airflow.sh via SSM
+    try:
+        response = ssm.send_command(
+            InstanceIds=[INSTANCE_ID],
+            DocumentName="AWS-RunShellScript",  # Use AWS-RunShellScript to run a shell command
+            Parameters={
+                'commands': [
+                    'cd /home/ubuntu',
+                    'chmod +x automate_airflow.sh',
+                    f'sudo -u ubuntu ./automate_airflow.sh {dag_name}' # Starts Airflow, runs Airflow DAG, sends a Lambda call to stop ec2 instance
+                ]
+            }
         )
-    # Display an error if something goes wrong. 
-    except ClientError as e:
-        print(e.response['Error']['Message'])
-    else:
-        print("Email sent! Message ID:"),
-        print(response['MessageId'])
+        print(f"Sent command to run {dag_name} DAG:", response)
+    except Exception as e:
+        print(f"Error with executing SSM command: {e}")
 
+def stop_instance():
+    """Stops EC2 instance."""
+    try:
+        # Safely shut down Airflow via SSM
+        response = ssm.send_command(
+            InstanceIds=[INSTANCE_ID],
+            DocumentName="AWS-RunShellScript",  # Use AWS-RunShellScript to run a shell command
+            Parameters={
+                'commands': [
+                    'cd /home/ubuntu/Airflow_EMR',
+                    'sudo -u ubuntu docker-compose stop' # Stops airflow
+                ]
+            }
+        )
+    except Exception as e:
+        print(f'Issues with stopping Airflow: {e}')
+
+    try:
+        response = ec2.stop_instances(InstanceIds=[INSTANCE_ID])
+        print(f"Stopping instance {INSTANCE_ID}: {response}")
+        
+        # Wait for the instance to stop
+        waiter = ec2.get_waiter('instance_stopped')
+        waiter.wait(InstanceIds=[INSTANCE_ID])
+        print(f"Instance {INSTANCE_ID} is now stopped.")
+    except Exception as e:
+        print(f"Error with stopping EC2 instance: {e}")
 
 def lambda_handler(event, context):
-    
-    # Load variables from the .env and config toml files
-    load_dotenv()
-    app_config = toml.load('config_file.toml')
-    aws_region = app_config['aws']['region']
-    s3_bucket = app_config['aws']['s3_bucket_input_and_script']
-    ec2_ip_address = app_config['aws']['ec2_ip_address']
-    sender = app_config['email']['sender']
-    recipient = app_config['email']['recipient']
-    dag_name = app_config['airflow']['dag_name']
-
-    s3_file_list_raw = []
-
-    # Get all the keys within the data folder of the input S3 bucket
-    s3_client=boto3.client('s3')
-    for object in s3_client.list_objects_v2(Bucket=s3_bucket, Prefix='data/')['Contents']:
-        s3_file_list_raw.append(object['Key'])
-
-    # Getting the file names for all the csv files within the data folder of the input S3 bucket. 
-    # Note that we will ignore the data folder object itself as it's not a csv file
-    s3_file_list = [obj.split('/')[-1] for obj in s3_file_list_raw if obj!='data/']
-    print('s3_file_list: ', s3_file_list)
-    
-    # Getting the required files list, which consist of all the tables pushed today from to S3
-    datestr = time.strftime("%Y-%m-%d")
-    required_file_list = [f'calendar_{datestr}.csv', f'inventory_{datestr}.csv', f'product_{datestr}.csv', f'sales_{datestr}.csv', f'store_{datestr}.csv']
-    print('required_file_list: ', required_file_list)
-    
-    # Only activate Airflow if the input bucket has all the required files
-    if set(required_file_list).issubset(s3_file_list):
-        required_file_url = ['s3://' + f'{s3_bucket}/data/' + a for a in required_file_list]
-        print('required_file_url: ', required_file_url)
-        table_name = [a[:-15] for a in required_file_list]
-        print('table_name: ', table_name)
-        data = json.dumps({'conf':{a:b for a,b in zip(table_name, required_file_url)}})
-        print(data)
-    # send signal to Airflow    
-        endpoint = f'http://{ec2_ip_address}:8080/api/v1/dags/{dag_name}/dagRuns'
-        user_credentials = f'{os.getenv("AIRFLOW_USERNAME")}:{os.getenv("AIRFLOW_PASSWORD")}'
-        subprocess.run([
-            'curl', 
-            '-X',
-            'POST',
-            endpoint,
-            '-H',
-            'accept: application/json',
-            '-H',
-            'Content-Type: application/json',
-            '--user',
-            user_credentials,
-            '--data',
-            data])
-        print('File are send to Airflow')
+    """Depending on the event, we either start or stop the EC2 instance."""
+    action = event.get('action')
+    if action == 'start':
+        # We start the EC2 instance and execute the corresponding Airflow DAG to the location input.
+        start_instance(dag_name)
+    elif action == 'stop':
+        stop_instance()
     else:
-        # If required files aren't found in the input bucket, send email to user reminding them of such
-        send_email(sender, recipient, aws_region)
+        raise ValueError("Invalid action. Use 'start' or 'stop'.")
