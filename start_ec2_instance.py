@@ -19,7 +19,7 @@ lambda_client = boto3.client("lambda",
                                 aws_secret_access_key=secret_access_key
                                 )
 
-# Send payload to AWS Lambda function to stop EC2 instance
+# Send payload to AWS Lambda function to start EC2 instance
 payload = {'action': 'start'}
 response = lambda_client.invoke(
     FunctionName=lambda_function_name,
