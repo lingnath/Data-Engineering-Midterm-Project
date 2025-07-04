@@ -60,6 +60,8 @@ def stop_instance():
                 ]
             }
         )
+        print('Waiting for 30 seconds before we stop EC2')
+        time.sleep(30)
     except Exception as e:
         print(f'Issues with stopping Airflow: {e}')
 
