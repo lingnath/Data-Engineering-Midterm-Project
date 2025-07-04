@@ -9,6 +9,7 @@ ec2 = boto3.client('ec2')
 ssm = boto3.client('ssm')
 
 load_dotenv()
+app_config = toml.load('config_file.toml')
 dag_name = app_config['airflow']['dag_name']
 INSTANCE_ID = os.getenv('ec2_instance_id')
 
