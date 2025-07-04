@@ -23,7 +23,7 @@ aws lambda create-function \
  --runtime python3.12 \
  --role arn:aws:iam::${account_id}:role/${lambda_role_name} \
  --layers arn:aws:lambda:${region}:${account_id}:layer:${lambda_layer_name}:${lambda_layer_version} \
- --timeout 30
+ --timeout 600
 
 # Removing the zip file to keep the folder clean
 rm lambda_code.zip
