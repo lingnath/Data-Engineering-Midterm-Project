@@ -19,7 +19,7 @@ This page outlines how to use the files I've provided so that you could use it t
   - Create an access key for this IAM user
 ## 2. EC2 Setup
   - Create and/or use an EC2 t2.xlarge instance running on Ubuntu 24.04
-  - >=24GB of EBS storage.
+  - At least 24GB of EBS storage.
   - Ensure you create or use an existing key pair for login when setting up the EC2 instance
   - Under security group inbound rules, create or modify a security group with the following:
     - SSH Type (Port 22) from Source as MY IP
