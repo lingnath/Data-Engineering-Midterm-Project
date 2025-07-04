@@ -18,7 +18,8 @@ This page outlines how to use the files I've provided so that you could use it t
     ```
   - Create an access key for this IAM user
 ## 2. EC2 Setup
-  - Create and/or use an EC2 t2.xlarge instance running on Ubuntu 24.04, with >=24GB of EBS storage.
+  - Create and/or use an EC2 t2.xlarge instance running on Ubuntu 24.04
+  - >=24GB of EBS storage.
   - Ensure you create or use an existing key pair for login when setting up the EC2 instance
   - Under security group inbound rules, create or modify a security group with the following:
     - SSH Type (Port 22) from Source as MY IP
@@ -27,6 +28,21 @@ This page outlines how to use the files I've provided so that you could use it t
   - Attach this security group to your EC2 instance
   - Attach an elastic IP address to your EC2 instance. This is so that when accessing the Airflow DAG API, you can keep using the same url to do so
   - Upload the files in this repository into your EC2 folder
+  - Make sure the role/instance profile has ```AmazonSSMManagedInstanceCore``` policy, with trust relationships being the following:
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "ec2.amazonaws.com"
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+ ```
 ## 3. Install Packages in EC2 Ubuntu
   - Run ```chmod +x <script>``` for each of the .sh scripts in the Software_Installations folder
   - Run the scripts within the Software_Installations folder in this order: ```./install_packages.sh``` -> ```./install_docker.sh``` -> ```./install_docker_compose.sh```
