@@ -1,6 +1,6 @@
 # Intro
 
-I have created a fully automated data pipeline that ETLs data from source to destination, including a superset dashboard that analyzes the data warehouse
+I have created a fully automated data pipeline that ETLs retail data from source to destination, including a superset dashboard that analyzes the data warehouse.
 
 This project consists of 2 sections:
 1. Setup
@@ -9,6 +9,10 @@ This project consists of 2 sections:
 Below image outlines how to use the files I've provided so that you could use it to create an end-to-end data pipeline
 <br>
 ![image](https://github.com/user-attachments/assets/00b390dd-051c-4879-90b9-653f8521b773)
+
+### Limitations
+1. The source data, which generated new data every day, is no longer available. Therefore, I had to save the static raw data and host it in my own S3 public bucket, which you can load it in the ```create_s3_buckets.py``` script. Therefore, this is no longer a traditional ETL process because there is no daily data. For the sake of this project, we are still able to create a fully automated ETL pipeline, even if the data is static.
+2. In a production setting, I will have tightened the IAM restrictions significant to protect the data and pipeline. However, given that this is meant to be a personal project and the source data is made up with no personally identifiable information, the relatively lax IAM policies should not be an issue.
 
 ## Setup
 
@@ -33,8 +37,8 @@ Below image outlines how to use the files I've provided so that you could use it
   - Ensure you create or use an existing key pair for login when setting up the EC2 instance
   - Under security group inbound rules, create or modify a security group with the following:
     - SSH Type (Port 22) from Source as MY IP
-    - Port 8080 from Sources as Anywhere-IPv4 and Anywhere IPv6
-    - Port 8088 from Sources as Anywhere-IPv4 and Anywhere IPv6
+    - Port 8080 from Sources as MY IP
+    - Port 8088 from Sources as MY IP
   - Attach this security group to your EC2 instance
   - Attach an elastic IP address to your EC2 instance. This is so that when accessing the Airflow DAG API, you can keep using the same url to do so
   - Upload the files in this repository into your EC2 folder
