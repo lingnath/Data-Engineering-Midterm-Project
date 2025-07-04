@@ -114,3 +114,6 @@ chmod +x setup.sh
   - Once you go to ```Spark_EDA.ipynb```, you can start analyzing the data by running each cell
 
 ## Run ETL
+There are 2 options. 
+1. We can run it manually by invoking the Lambda function we created by running ```start_ec2_instance.py```.
+2. Or we can wait until the cron schedule happens which will automatically run the ETL job.
