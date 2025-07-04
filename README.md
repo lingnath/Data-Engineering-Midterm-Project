@@ -1,8 +1,18 @@
-This page outlines how to use the files I've provided so that you could use it to create an end-to-end data pipeline
+# Intro
+
+I have created a fully automated data pipeline that ETLs data from source to destination, including a superset dashboard that analyzes the data warehouse
+
+This project consists of 2 sections:
+1. Setup
+2. Run ETL
+
+Below image outlines how to use the files I've provided so that you could use it to create an end-to-end data pipeline
 <br>
 ![image](https://github.com/user-attachments/assets/a4a2178e-64a3-47ed-ad2e-82e5ba0f90b8)
 
-## 1. AWS setup
+## Setup
+
+### 1. AWS setup
   - Create AWS account
   - Create IAM user with following policies attached
     ```
@@ -17,7 +27,7 @@ This page outlines how to use the files I've provided so that you could use it t
     - AmazonSESFullAccess
     ```
   - Create an access key for this IAM user
-## 2. EC2 Setup
+### 2. EC2 Setup
   - Create and/or use an EC2 t2.xlarge instance running on Ubuntu 24.04
   - At least 24GB of EBS storage.
   - Ensure you create or use an existing key pair for login when setting up the EC2 instance
@@ -43,7 +53,7 @@ This page outlines how to use the files I've provided so that you could use it t
     ]
 }
  ```
-## 3. Install Packages in EC2 Ubuntu
+### 3. Install Packages in EC2 Ubuntu
   - Run ```chmod +x <script>``` for each of the .sh scripts in the Software_Installations folder
   - Run the scripts within the Software_Installations folder in this order: ```./install_packages.sh``` -> ```./install_docker.sh``` -> ```./install_docker_compose.sh```
   - If you haven't done so already, run "aws configure" in the command line so that you can run the scripts on the EC2 command line without there being permission errors. Enter the following:
@@ -53,7 +63,7 @@ This page outlines how to use the files I've provided so that you could use it t
     - Default region name [None]: {aws region your EC2 is in}
     - Default output format [None]: json
     ```
-## 4. Set up config files
+### 4. Set up config files
   - Create a ```.env``` file both in the main folder and the Airflow_EMR subfolder.
       - For the ```.env``` file in the main folder, the structure looks like this:
         ```
@@ -71,16 +81,16 @@ This page outlines how to use the files I've provided so that you could use it t
         ```
       - To generate the ```AIRFLOW__WEBSERVER__SECRET_KEY``` and ```AIRFLOW__CORE__FERNET_KEY```, run ```python3 create_airflow_keys.py``` and then paste the print outputs to the ```.env``` file in the ```Airflow_EMR``` subfolder
     - Edit the fields in the ```config_file.toml``` file in the main folder
-## 5. Create AWS artifacts
+### 5. Create AWS artifacts
   - In the ```Create_AWS_Artifacts``` folder, run the following command ```chmod +x create_aws_artifacts.sh```. Then run ```./create_aws_artifacts.sh```
   - To ensure that your Lambda function can use SES, please check your email for the email address that you put in under sender field in the config_file.toml file and verify it for the confirmation email that AWS sent. The confirmation email should from no-reply-aws@amazon.com with the following subject line "Amazon Web Services – Email Address Verification Request in region {region you specified under the toml file}"
-## 6. Setup and Run Airflow
+### 6. Setup and Run Airflow
   - Please go into the Airflow_EMR folder, run ```chmod +x build_airflow_in_docker.sh``` then run ```./build_airflow_in_docker.sh```
   - Create a port forwarding connection for port 8080 (optional if you want to access locally)
   - In your browser url, enter ```{EC2 Public IPv4 address}:8080```. This will lead you to the Airflow UI
   - In the Airflow_EMR folder, run ```chmod +x trigger_airflow.sh```
   - Then run ```./trigger_airflow.sh```
-## 7. Setup and Run Superset
+### 7. Setup and Run Superset
   - Go into the Superset folder, run ```chmod +x build_superset_in_docker.sh``` then run ```./build_superset_in_docker.sh```
   - Create a port forwarding connection for port 8088
   - Paste in [http://localhost:8088/login/](http://localhost:8088/login/) to login
@@ -88,10 +98,10 @@ This page outlines how to use the files I've provided so that you could use it t
 ```awsathena+rest://{aws access key}:{aws secret access key}@athena.{aws region}.amazonaws.com/?s3_staging_dir=s3://{output s3 bucket}/superset_metadata&work_group=primary```
   - Add the necessary datasets in Superset
   - Build dashboards to your heart's content
-## 8. Remove AWS Artifacts (Optional)
+### 8. Remove AWS Artifacts (Optional)
   - Once you are done with the entire project, go into the ```Remove_AWS_Artifacts folder```.
   - Then run ```chmod +x remove_aws_artifacts.sh``` and then run ```./remove_aws_artifacts.sh```
-## 9. EDA (Optional)
+### 9. EDA (Optional)
 If you want to analyze the raw data before the ETL step, below steps will instruct you on how to do so <br>
   - Download the ```Local_EDA``` folder to your **local directory**. This part is meant to be done on your local machine so that you don't have to pay for an EC2 instance to run it
   - Make sure you have WSL or Ubuntu installed on your local machine
@@ -102,3 +112,5 @@ chmod +x setup.sh
 ```
   - Click on the Jupyter Notebook link provided in the terminal
   - Once you go to ```Spark_EDA.ipynb```, you can start analyzing the data by running each cell
+
+## Run ETL
