@@ -12,12 +12,12 @@ aws iam attach-role-policy \
  --role-name ${lambda_role_name} \
  --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
-# Attach S3 full access so that Lambda can read the buckets
+# Attach EC2 full access so that Lambda can start EC2
 aws iam attach-role-policy \
  --role-name ${lambda_role_name} \
- --policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess
+ --policy-arn arn:aws:iam::aws:policy/AmazonEC2FullAccess
 
-# Attach SES full access, so that the email script in Lambda will work
+# Attach SSM full access, so that Lambda can pass scripts into the EC2 instance
 aws iam attach-role-policy \
  --role-name ${lambda_role_name} \
- --policy-arn arn:aws:iam::aws:policy/AmazonSESFullAccess
+ --policy-arn arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
