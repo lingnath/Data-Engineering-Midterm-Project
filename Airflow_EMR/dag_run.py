@@ -199,7 +199,7 @@ def retrieve_s3_files(**kwargs):
         data = {a:b for a,b in zip(table_name, required_file_url)}
         print(data)
         kwargs['ti'].xcom_push(key='data', value=data)
-        return "todel"
+        return "create_emr_cluster"
     # Otherwise we stop the process abruptly and send an email notifying of missing files
     else:
         send_email(sender, recipient, aws_region)
