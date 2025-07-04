@@ -121,5 +121,5 @@ pip install boto3
 pip install python_dotenv
 pip install toml
 ```
-on your Linux environment
+on your Linux environment <br>
 2. Or we can wait until the cron schedule happens which will automatically run the ETL job.
