@@ -43,8 +43,7 @@ This page outlines how to use the files I've provided so that you could use it t
         ```
         - ACCESS_KEY=''
         - SECRET_KEY=''
-        - AIRFLOW_USERNAME='admin'
-        - AIRFLOW_PASSWORD='admin'
+        - ec2_instance_id=''
         ```
       - **NOTE**: If you feel the Airflow username and password are insecure, after Airflow is set up and the Lambda Function is created, please feel free to change the Airflow username and password for the above .env file in **both the AWS CLI and Lambda Function, as well as the username and password in the Airflow UI**. **But please make sure the changes you've made in all places are identical** as the Lambda function will not be able to call the Airflow DAG if the changes aren't the same.
       - For the .env file in the Airflow_EMR subfolder, the structure looks like this:
