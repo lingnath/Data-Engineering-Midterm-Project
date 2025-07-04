@@ -190,7 +190,7 @@ def retrieve_s3_files(**kwargs):
     required_file_list = [f'calendar_{datestr}.csv', f'inventory_{datestr}.csv', f'product_{datestr}.csv', f'sales_{datestr}.csv', f'store_{datestr}.csv']
     print('required_file_list: ', required_file_list)
     
-    # Only activate Airflow if the input bucket has all the required files
+    # Only activate EMR and Glue if the input bucket has all the required files
     if set(required_file_list).issubset(s3_file_list):
         required_file_url = ['s3://' + f'{s3_input_bucket}/data/' + a for a in required_file_list]
         print('required_file_url: ', required_file_url)
@@ -200,6 +200,7 @@ def retrieve_s3_files(**kwargs):
         print(data)
         kwargs['ti'].xcom_push(key='data', value=data)
         return "todel"
+    # Otherwise we stop the process abruptly and send an email notifying of missing files
     else:
         send_email(sender, recipient, aws_region)
         return "end"
