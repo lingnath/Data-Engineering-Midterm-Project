@@ -1,12 +1,22 @@
 import airflow
 from airflow import DAG
 from datetime import timedelta
-from airflow.operators.python_operator import PythonOperator
+from airflow.operators.python_operator import PythonOperator, BranchPythonOperator
 from airflow.providers.amazon.aws.operators.emr import EmrAddStepsOperator, EmrCreateJobFlowOperator, EmrTerminateJobFlowOperator
 from airflow.providers.amazon.aws.sensors.emr import EmrStepSensor
 from airflow.providers.amazon.aws.operators.glue_crawler import GlueCrawlerOperator
 from airflow.operators.dummy import DummyOperator
 import toml
+from dotenv import load_dotenv
+import os
+import boto3
+from botocore.exceptions import ClientError
+import json
+import time
+
+load_dotenv()
+access_key = os.getenv("ACCESS_KEY")
+secret_access_key = os.getenv("SECRET_KEY")
 
 # Loading the variables from config toml file
 app_config = toml.load('/opt/airflow/config_file.toml')
@@ -16,6 +26,10 @@ glue_role_name = app_config['aws']['glue_role_name']
 glue_crawler_name = app_config['aws']['glue_crawler_name']
 athena_db = app_config['aws']['athena_db']
 dag_name = app_config['airflow']['dag_name']
+sender = app_config['email']['sender']
+recipient = app_config['email']['recipient']
+aws_region = app_config['aws']['region']
+
 
 # Creating the Spark Steps configurations to pass to the EMR cluster
 SPARK_STEPS = [
@@ -107,15 +121,88 @@ JOB_FLOW_OVERRIDES = {
     "ServiceRole": "EMR_DefaultRole",
 }
 
+def send_email(sender, recipient, aws_region):
+    # The subject line for the email.
+    SUBJECT = "Files missing in S3 bucket"
+
+    # The email body for recipients with non-HTML email clients.
+    BODY_TEXT = ("Files missing in AWS S3 bucket. Please check load to S3 task.")
+
+    # The character encoding for the email.
+    CHARSET = "UTF-8"
+
+    # Create a new SES resource and specify a region.
+    client = boto3.client('ses', 
+                            region_name=aws_region,
+                            aws_access_key_id=access_key, 
+                            aws_secret_access_key=secret_access_key)
+
+    # Try to send the email.
+    try:
+        #Provide the contents of the email.
+        response = client.send_email(
+            Destination={
+                'ToAddresses': [
+                    recipient,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Text': {
+                        'Charset': CHARSET,
+                        'Data': BODY_TEXT,
+                    },
+                },
+                'Subject': {
+                    'Charset': CHARSET,
+                    'Data': SUBJECT,
+                },
+            },
+            Source=sender
+
+        )
+    # Display an error if something goes wrong. 
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    else:
+        print("Email sent! Message ID:"),
+        print(response['MessageId'])
+
 # Creating a function that passes the data from Lambda's API call to Airflow's tasks
 def retrieve_s3_files(**kwargs):
-    kwargs['ti'].xcom_push(key='data', value={
-                                                'calendar': kwargs['dag_run'].conf['calendar'],
-                                                'inventory': kwargs['dag_run'].conf['inventory'],
-                                                'product': kwargs['dag_run'].conf['product'],
-                                                'sales': kwargs['dag_run'].conf['sales'],
-                                                'store': kwargs['dag_run'].conf['store']           
-    })
+
+    s3_file_list_raw = []
+
+    # Get all the keys within the data folder of the input S3 bucket
+    s3_client=boto3.client('s3',
+                            aws_access_key_id=access_key, 
+                            aws_secret_access_key=secret_access_key)
+    for object in s3_client.list_objects_v2(Bucket=s3_input_bucket, Prefix='data/')['Contents']:
+        s3_file_list_raw.append(object['Key'])
+
+    # Getting the file names for all the csv files within the data folder of the input S3 bucket. 
+    # Note that we will ignore the data folder object itself as it's not a csv file
+    s3_file_list = [obj.split('/')[-1] for obj in s3_file_list_raw if obj!='data/']
+    print('s3_file_list: ', s3_file_list)
+    
+    # Getting the required files list, which consist of all the tables pushed today from to S3
+    datestr = time.strftime("%Y-%m-%d")
+    required_file_list = [f'calendar_{datestr}.csv', f'inventory_{datestr}.csv', f'product_{datestr}.csv', f'sales_{datestr}.csv', f'store_{datestr}.csv']
+    print('required_file_list: ', required_file_list)
+    
+    # Only activate Airflow if the input bucket has all the required files
+    if set(required_file_list).issubset(s3_file_list):
+        required_file_url = ['s3://' + f'{s3_input_bucket}/data/' + a for a in required_file_list]
+        print('required_file_url: ', required_file_url)
+        table_name = [a[:-15] for a in required_file_list]
+        print('table_name: ', table_name)
+        data = {a:b for a,b in zip(table_name, required_file_url)}
+        print(data)
+        kwargs['ti'].xcom_push(key='data', value=data)
+        return "todel"
+    else:
+        send_email(sender, recipient, aws_region)
+        return "end"
 
 # Initializing the dag
 dag = DAG(
@@ -131,7 +218,7 @@ begin = DummyOperator(task_id="begin",
 
 # Creating a PythonOperator that utilizes the python function created above.
 # Retrieves the S3 URIs for each of the raw input tables
-parse_request = PythonOperator(task_id='parse_request',
+parse_request = BranchPythonOperator(task_id='parse_request',
                                 provide_context=True, # Airflow will pass a set of keyword arguments that can be used in your function
                                 python_callable=retrieve_s3_files,
                                 dag=dag
@@ -205,4 +292,8 @@ end = DummyOperator(task_id="end",
     )
 
 # Connecting the steps together into a unified workflow
-begin >> parse_request >> create_emr_cluster >> step_adder >> step_checker >> remove_emr_cluster >> [run_glue_crawler_calendar, run_glue_crawler_fact, run_glue_crawler_product, run_glue_crawler_store] >> end
+
+begin >> parse_request
+
+parse_request >> create_emr_cluster >> step_adder >> step_checker >> remove_emr_cluster >> [run_glue_crawler_calendar, run_glue_crawler_fact, run_glue_crawler_product, run_glue_crawler_store] >> end
+parse_request >> end
