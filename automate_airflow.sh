@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /home/ubuntu
-source airflow_env/bin/activate
+source python_env/bin/activate
 folder_name="Airflow_EMR"
 cd ${folder_name}
 
