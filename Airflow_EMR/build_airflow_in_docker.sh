@@ -51,7 +51,7 @@ sudo chown -R ubuntu:ubuntu dags/
 rm config_file.toml
 
 # Copying the dag python file into the dags folder so that Airflow detects and registers it
-sudo cp dag_run.py dags/
+cp dag_run.py dags/
 
 # Restarting Airflow so that the DAG is reflected in the UI once we unpause it
 docker-compose stop
