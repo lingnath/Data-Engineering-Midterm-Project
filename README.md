@@ -115,5 +115,11 @@ chmod +x setup.sh
 
 ## Run ETL
 There are 2 options. 
-1. We can run it manually by invoking the Lambda function we created by running ```start_ec2_instance.py```.
+1. We can run it manually by invoking the Lambda function we created by running ```start_ec2_instance.py``` either on the EC2 instance or even locally in your ```/home/ubuntu``` directory as long as you have the ```.env```, ```config_file.toml``` files, and you've run:
+```bash
+pip install boto3
+pip install python_dotenv
+pip install toml
+```
+on your Linux environment
 2. Or we can wait until the cron schedule happens which will automatically run the ETL job.
