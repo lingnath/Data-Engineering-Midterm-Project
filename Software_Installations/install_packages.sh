@@ -4,13 +4,18 @@
 sudo apt-get update
 sudo apt-get install python3.12 -y
 sudo apt-get install jq
+# Get SSM agent
+sudo apt-get install -y snapd
+sudo snap install amazon-ssm-agent --classic
+sudo systemctl start snap.amazon-ssm-agent.amazon-ssm-agent.service
+sudo systemctl enable snap.amazon-ssm-agent.amazon-ssm-agent.service
+sudo apt-get install libpq-dev python3-dev
 # Install AWS CLI
-# sudo apt-get install awscli -y
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 sudo apt-get install unzip
 unzip awscliv2.zip
 sudo ./aws/install
-# Install Python library
+# Install other packages
 sudo apt-get install pip -y
 sudo apt-get install zip -y
 # Install and activate Python venv
