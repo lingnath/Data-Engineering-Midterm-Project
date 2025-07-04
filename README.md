@@ -11,7 +11,7 @@ Below image outlines how to use the files I've provided so that you could use it
 ![image](https://github.com/user-attachments/assets/00b390dd-051c-4879-90b9-653f8521b773)
 
 ### Limitations
-1. The source data, which generated new data every day, is no longer available. Therefore, I had to save the static raw data and host it in my own S3 public bucket, which you can load it in the ```create_s3_buckets.py``` script. Therefore, this is no longer a traditional ETL process because there is no daily data. For the sake of this project, we are still able to create a fully automated ETL pipeline, even if the data is static.
+1. The source data, which generated new data every day, is no longer available. Therefore, I had to save the static raw data and host it in my own S3 public bucket, which you can load it by running the ```python3 create_s3_buckets.py``` script. Therefore, this is no longer a traditional ETL process because there is no daily data. For the sake of this project, we are still able to create a fully automated ETL pipeline, even if the data is static.
 2. In a production setting, I will have tightened the IAM restrictions significant to protect the data and pipeline. However, given that this is meant to be a personal project and the source data is made up with no personally identifiable information, the relatively lax IAM policies should not be an issue.
 
 ## Setup
