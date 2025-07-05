@@ -119,11 +119,10 @@ chmod +x setup.sh
 
 ## Run ETL
 
-### Running ETL Job
-
 ### Important Consideration
 This is not a traditional ETL process because the data is static and DOES NOT get uploaded to the input S3 bucket on a scheduled basis. If we run the ETL script on a day that does not match the date of the csv file, we will not retrieve anything. ```upload_raw_files.py``` will upload the csv files from my public S3 bucket to the input S3 bucket we've created named **today's date**. Therefore, if you want to run the ETL job and the csv files are from a date in the past that is not today, please run ```python3 upload_raw_files.py``` before running the ETL Job.
 
+### Running ETL Job
 There are 3 options. 
 1. We can run ```start_ec2_instance.py``` manually in the EC2 on ```/home/ubuntu``` directory where you will need to run the following:
 ```bash
