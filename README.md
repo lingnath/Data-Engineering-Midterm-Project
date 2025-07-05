@@ -11,7 +11,7 @@ Below image outlines how to use the files I've provided so that you could use it
 ![image](https://github.com/user-attachments/assets/00b390dd-051c-4879-90b9-653f8521b773)
 
 ### Limitations
-1. The source data, which generated new data every day, is no longer available. Therefore, I had to save the static raw data and host it in my own S3 public bucket, which you can load it by running the ```python3 create_s3_buckets.py``` script. Therefore, this is no longer a traditional ETL process because there is no daily data. For the sake of this project, we are still able to create a fully automated ETL pipeline, even if the data is static.
+1. The source data, which generated new data every day, is no longer available. Therefore, I had to save the static raw data and host it in my own S3 public bucket, which you can load it by running the ```python3 upload_raw_files.py``` script. Therefore, this is no longer a traditional ETL process because there is no daily data. For the sake of this project, we are still able to create a fully automated ETL pipeline, even if the data is static.
 2. In a production setting, I will have tightened the IAM restrictions significant to protect the data and pipeline. However, given that this is meant to be a personal project and the source data is made up with no personally identifiable information, the relatively lax IAM policies should not be an issue.
 
 ## Setup
@@ -118,6 +118,12 @@ chmod +x setup.sh
   - Once you go to ```Spark_EDA.ipynb```, you can start analyzing the data by running each cell
 
 ## Run ETL
+
+### Running ETL Job
+
+### Important Consideration
+This is not a traditional ETL process because the data is static and DOES NOT get uploaded to the input S3 bucket. If we run the ETL script on a day that does not match the date of the csv file, we will not retrieve anything. Therefore, we will need to reupload the csv files from my public S3 bucket which hosts the raw csv files. ```upload_raw_files.py``` will upload the csv files from my public S3 bucket to the input S3 bucket we've created named **today's date**. Therefore, if you want to run the ETL job and the csv files are from a date in the past that is not today, please run ```python3 upload_raw_files.py``` before running the ETL Job.
+
 There are 3 options. 
 1. We can run ```start_ec2_instance.py``` manually in the EC2 on ```/home/ubuntu``` directory where you will need to run the following:
 ```bash
