@@ -12,7 +12,6 @@ app_config = toml.load('config_file.toml')
 s3_bucket_input_and_script = app_config['aws']['s3_bucket_input_and_script']
 s3_bucket_output = app_config['aws']['s3_bucket_output']
 aws_region = app_config['aws']['region']
-tables = ['calendar', 'fact', 'product', 'store']
 ACCESS_KEY = os.getenv('ACCESS_KEY')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
