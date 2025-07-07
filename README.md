@@ -136,7 +136,7 @@ This is not a traditional ETL process because the data is static and DOES NOT ge
 There are 3 options. 
 1. We can run ```start_ec2_instance.py``` manually in the EC2 on ```/home/ubuntu``` directory where you will need to run the following:
 ```bash
-source python_env/bin/activate
+source /home/ubuntu/Software_Installations/python_env/bin/activate
 python3 start_ec2_instance.py
 ```
 2. Run ```start_ec2_instance.py``` locally on ```/home/ubuntu``` directory as long as you have the ```.env```, ```config_file.toml``` files in the same directory, and on your Linux CLI, you will need to run the following:
@@ -144,7 +144,7 @@ python3 start_ec2_instance.py
 sudo apt-get install python3.12 -y
 sudo apt install python3.12-venv
 python3 -m venv python_env
-source python_env/bin/activate
+source /home/ubuntu/Software_Installations/python_env/bin/activate
 pip install boto3
 pip install python_dotenv
 pip install toml
