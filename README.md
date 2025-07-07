@@ -40,7 +40,6 @@ Below image outlines how to use the files I've provided so that you could use it
     - Port 8080 from Sources as MY IP
     - Port 8088 from Sources as MY IP
   - Attach this security group to your EC2 instance
-  - Attach an elastic IP address to your EC2 instance. This is so that when accessing the Airflow DAG API, you can keep using the same url to do so
   - Upload the files in this repository into your EC2 folder
   - Make sure the role/instance profile has ```AmazonSSMManagedInstanceCore``` policy, with trust relationships being the following:
 ```json
