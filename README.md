@@ -113,7 +113,7 @@ Below image outlines how to use the files I've provided so that you could use it
   - Build dashboards to your heart's content
 ### 8. Remove AWS Artifacts (Optional)
   - Once you are done with the entire project, go into the ```Remove_AWS_Artifacts folder```.
-  - Then run
+  - Run the following commands
   - ```bash
     chmod +x remove_aws_artifacts.sh
     source /home/ubuntu/Software_Installations/python_env/bin/activate
