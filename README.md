@@ -85,7 +85,13 @@ Below image outlines how to use the files I've provided so that you could use it
       - To generate the ```AIRFLOW__WEBSERVER__SECRET_KEY``` and ```AIRFLOW__CORE__FERNET_KEY```, run ```python3 create_airflow_keys.py``` and then paste the print outputs to the ```.env``` file in the ```Airflow_EMR``` subfolder
     - Edit the fields in the ```config_file.toml``` file in the main folder
 ### 5. Create AWS artifacts
-  - In the ```Create_AWS_Artifacts``` folder, run the following command ```chmod +x create_aws_artifacts.sh```. Then run ```./create_aws_artifacts.sh```
+  - In the ```Create_AWS_Artifacts``` folder,
+  - Run the following commands
+  - ```bash
+    chmod +x create_aws_artifacts.sh
+    source /home/ubuntu/Software_Installations/python_env/bin/activate
+    ```
+  - Then run ```./create_aws_artifacts.sh```
   - To ensure that your Lambda function can use SES, please check your email for the email address that you put in under sender field in the config_file.toml file and verify it for the confirmation email that AWS sent. The confirmation email should from no-reply-aws@amazon.com with the following subject line "Amazon Web Services – Email Address Verification Request in region {region you specified under the toml file}"
 ### 6. Setup and Run Airflow
   - Please go into the Airflow_EMR folder, run ```chmod +x build_airflow_in_docker.sh``` then run ```./build_airflow_in_docker.sh```
