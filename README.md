@@ -82,7 +82,12 @@ Below image outlines how to use the files I've provided so that you could use it
         - AIRFLOW_UID=1000
         - AIRFLOW_GID=0
         ```
-      - To generate the ```AIRFLOW__WEBSERVER__SECRET_KEY``` and ```AIRFLOW__CORE__FERNET_KEY```, run ```python3 create_airflow_keys.py``` and then paste the print outputs to the ```.env``` file in the ```Airflow_EMR``` subfolder
+      - To generate the ```AIRFLOW__WEBSERVER__SECRET_KEY``` and ```AIRFLOW__CORE__FERNET_KEY```, run
+      - ```bash
+        source /home/ubuntu/Software_Installations/python_env/bin/activate
+        python3 create_airflow_keys.py
+        ```
+      - Then paste the print outputs to the ```.env``` file in the ```Airflow_EMR``` subfolder
     - Edit the fields in the ```config_file.toml``` file in the main folder
 ### 5. Create AWS artifacts
   - In the ```Create_AWS_Artifacts``` folder,
