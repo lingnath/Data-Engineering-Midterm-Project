@@ -28,7 +28,7 @@ docker-compose build
 docker-compose up -d postgres
 
 # Initialize database
-docker-compose run --rm webserver airflow db init
+docker-compose run --rm webserver airflow db migrate
 
 # Start Webserver and Scheduler
 docker-compose up -d
