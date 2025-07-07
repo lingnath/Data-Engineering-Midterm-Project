@@ -148,7 +148,7 @@ python3 start_ec2_instance.py
 sudo apt-get install python3.12 -y
 sudo apt install python3.12-venv
 python3 -m venv python_env
-source /home/ubuntu/Software_Installations/python_env/bin/activate
+source python_env/bin/activate
 pip install boto3
 pip install python_dotenv
 pip install toml
