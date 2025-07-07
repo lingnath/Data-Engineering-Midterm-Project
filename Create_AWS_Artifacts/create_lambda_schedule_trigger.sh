@@ -12,7 +12,7 @@ payload='{\"action\":\"start\"}'
 aws events put-rule \
  --name ${lambda_schedule_rule_name} \
  --region ${aws_region} \
- --schedule-expression "cron(0 9 * * ? *)" # Runs at 9am daily UTC, which is 5am EST, 1 hour after the scheduled push to the s3 bucket from Snowflake
+ --schedule-expression "cron(0 9 * * ? *)" # Runs at 9am daily UTC, which is 5am EST
 
 # Sleep command applied to give a bit of time so that Lambda can detect the newly created Eventbridge rule
 sleep 3
