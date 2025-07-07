@@ -2,7 +2,7 @@
 
 cd /home/ubuntu
 source Software_Installations/python_env/bin/activate
-folder_name="Airflow_EMR"
+folder_name="airflow_emr"
 cd ${folder_name}
 
 # Start Airflow
