@@ -109,7 +109,12 @@ Below image outlines how to use the files I've provided so that you could use it
   - Build dashboards to your heart's content
 ### 8. Remove AWS Artifacts (Optional)
   - Once you are done with the entire project, go into the ```Remove_AWS_Artifacts folder```.
-  - Then run ```chmod +x remove_aws_artifacts.sh``` and then run ```./remove_aws_artifacts.sh```
+  - Then run
+  - ```bash
+    chmod +x remove_aws_artifacts.sh
+    source /home/ubuntu/Software_Installations/python_env/bin/activate
+  - ```
+  - Then run ```./remove_aws_artifacts.sh```
 ### 9. EDA (Optional)
 If you want to analyze the raw data before the ETL step, below steps will instruct you on how to do so <br>
   - Download the ```Local_EDA``` folder to your **local directory**. This part is meant to be done on your local machine so that you don't have to pay for an EC2 instance to run it
