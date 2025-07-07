@@ -104,7 +104,7 @@ Below image outlines how to use the files I've provided so that you could use it
   - In your browser url, enter ```{EC2 Public IPv4 address}:8080```. This will lead you to the Airflow UI
   - Go to your DAG in the Airflow UI and run ```Trigger DAG```
 ### 7. Setup and Run Superset
-  - Go into the Superset folder, run ```chmod +x build_superset_in_docker.sh``` then run ```./build_superset_in_docker.sh```
+  - Go into the ```Superset``` folder, run ```chmod +x build_superset_in_docker.sh``` then run ```./build_superset_in_docker.sh```
   - Create a port forwarding connection for port 8088
   - Paste in [http://localhost:8088/login/](http://localhost:8088/login/) to login
   - Create a new database by entering the following to connect Superset to Athena:
