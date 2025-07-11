@@ -9,7 +9,6 @@ lambda_schedule_rule_name=''
 lambda_layer_version=''
 glue_role_name=''
 glue_crawler_name=''
-ec2_ip_address='{Public IPv4 address}'
 account_id='{12 digit account id}'
 athena_db=''
 
