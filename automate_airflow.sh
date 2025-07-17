@@ -35,7 +35,7 @@ stuck_wait=0
 
 while true; do
     # Get the most recent DAG run's state (you may need to adjust for the exact DAG ID)
-    DAG_STATUS=$(docker exec ${folder_name}_webserver_1 airflow dags list-runs -d "$1" --output json | jq '.[0].state')
+    DAG_STATUS=$(docker exec ${folder_name}_scheduler_1 airflow dags list-runs -d "$1" --output json | jq '.[0].state')
     DAG_STATUS=${DAG_STATUS//\"/}
     echo ${DAG_STATUS}
 
@@ -49,15 +49,15 @@ while true; do
         echo "DAG is still running..."
 
         # Begin stuck task check
-        execution_date=$(docker exec ${folder_name}_webserver_1 airflow dags list-runs -d "$dag_id" --output json | jq -r '.[0].execution_date')
+        execution_date=$(docker exec ${folder_name}_scheduler_1 airflow dags list-runs -d "$dag_id" --output json | jq -r '.[0].execution_date')
 
-        pending_tasks=$(docker exec ${folder_name}_webserver_1 airflow tasks states-for-dag-run "$dag_id" "$execution_date" --output json | \
+        pending_tasks=$(docker exec ${folder_name}_scheduler_1 airflow tasks states-for-dag-run "$dag_id" "$execution_date" --output json | \
             jq -r '.[] | select(.state == "none" or .state == null or .state == "queued" or .state == "scheduled") | .task_id')
 
-        running_count=$(docker exec ${folder_name}_webserver_1 airflow tasks states-for-dag-run "$dag_id" "$execution_date" --output json | \
+        running_count=$(docker exec ${folder_name}_scheduler_1 airflow tasks states-for-dag-run "$dag_id" "$execution_date" --output json | \
             jq '[.[] | select(.state == "running")] | length')
 
-        success_count=$(docker exec ${folder_name}_webserver_1 airflow tasks states-for-dag-run "$dag_id" "$execution_date" --output json | \
+        success_count=$(docker exec ${folder_name}_scheduler_1 airflow tasks states-for-dag-run "$dag_id" "$execution_date" --output json | \
             jq '[.[] | select(.state == "success")] | length')
 
         echo "Pending tasks: $pending_tasks"
