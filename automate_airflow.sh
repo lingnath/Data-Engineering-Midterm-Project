@@ -25,7 +25,7 @@ while ! check_scheduler_heartbeat; do
 done
 
 # Trigger DAG
-docker exec ${folder_name}_webserver_1 airflow dags trigger "$1"
+docker exec ${folder_name}_scheduler_1 airflow dags trigger "$1"
 
 # Wait until DAG finishes running
 dag_id="$1"
