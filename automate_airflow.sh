@@ -8,10 +8,21 @@ cd ${folder_name}
 # Start Airflow
 docker-compose up -d
 
-# Poll until Airflow webserver and scheduler are running
-echo "Waiting 60 seconds for Airflow webserver and scheduler to start..."
-# Note to self: Find out how to dynamically check whether Airflow webserver and scheduler are done running
-sleep 60
+# Ensure scheduler is actually healthy and processing DAGs
+check_scheduler_heartbeat() {
+    scheduler_heartbeat=$(docker exec -it ${folder_name}_scheduler_1 airflow jobs check --job-type SchedulerJob 2>&1)
+    if [[ "$scheduler_heartbeat" != *"No alive"* ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+echo "Checking Airflow scheduler heartbeat..."
+while ! check_scheduler_heartbeat; do
+    echo "Waiting for scheduler to become alive..."
+    sleep 10
+done
 
 # Trigger DAG
 docker exec ${folder_name}_webserver_1 airflow dags trigger "$1"
