@@ -28,6 +28,11 @@ done
 docker exec ${folder_name}_webserver_1 airflow dags trigger "$1"
 
 # Wait until DAG finishes running
+dag_id="$1"
+stuck_check_interval=30
+stuck_max_wait=300  # 5 minutes
+stuck_wait=0
+
 while true; do
     # Get the most recent DAG run's state (you may need to adjust for the exact DAG ID)
     DAG_STATUS=$(docker exec ${folder_name}_webserver_1 airflow dags list-runs -d "$1" --output json | jq '.[0].state')
@@ -42,7 +47,42 @@ while true; do
         break
     else
         echo "DAG is still running..."
-        sleep 10  # Wait for 10 seconds before checking again
+
+        # Begin stuck task check
+        execution_date=$(docker exec ${folder_name}_webserver_1 airflow dags list-runs -d "$dag_id" --output json | jq -r '.[0].execution_date')
+
+        pending_tasks=$(docker exec ${folder_name}_webserver_1 airflow tasks states-for-dag-run "$dag_id" "$execution_date" --output json | \
+            jq -r '.[] | select(.state == "none" or .state == null or .state == "queued" or .state == "scheduled") | .task_id')
+
+        running_count=$(docker exec ${folder_name}_webserver_1 airflow tasks states-for-dag-run "$dag_id" "$execution_date" --output json | \
+            jq '[.[] | select(.state == "running")] | length')
+
+        success_count=$(docker exec ${folder_name}_webserver_1 airflow tasks states-for-dag-run "$dag_id" "$execution_date" --output json | \
+            jq '[.[] | select(.state == "success")] | length')
+
+        echo "Pending tasks: $pending_tasks"
+        echo "Running count: $running_count"
+        echo "Success count: $success_count"
+
+        if [[ -n "$pending_tasks" && $running_count -eq 0 && $success_count -gt 0 ]]; then
+            echo "Potential stuck state: pending tasks exist, none running, some succeeded."
+            stuck_wait=$((stuck_wait + stuck_check_interval))
+        else
+            echo "DAG is not stuck."
+            stuck_wait=0  # Reset if progress is seen
+        fi
+
+        # If stuck for more than threshold, restart scheduler
+        if [ $stuck_wait -ge $stuck_max_wait ]; then
+            echo "Detected no progress for 5 minutes. Restarting Airflow scheduler..."
+            pkill -f "airflow scheduler"
+            sleep 5
+            nohup airflow scheduler &
+            echo "Scheduler restarted."
+            stuck_wait=0  # Reset counter after restart
+        fi
+
+        sleep $stuck_check_interval
     fi
 done
 
