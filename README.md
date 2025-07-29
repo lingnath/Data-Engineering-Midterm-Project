@@ -67,8 +67,8 @@ Below image outlines how to use the files I've provided so that you could use it
     - Default output format [None]: json
     ```
 ### 4. Set up config files
-  - Create a ```.env``` file both in the main folder and the ```Airflow_EMR``` folder.
-  - For the ```.env``` file in the main folder, the structure looks like this:
+  - Create a ```.env``` file both in ```/home/ubuntu/Data-Engineering-Midterm-Project/``` and the ```Airflow_EMR``` folder.
+  - For the ```.env``` file in ```/home/ubuntu/Data-Engineering-Midterm-Project/```, the structure looks like this:
     ```
     - ACCESS_KEY=''
     - SECRET_KEY=''
@@ -88,7 +88,7 @@ Below image outlines how to use the files I've provided so that you could use it
     python3 /home/ubuntu/Data-Engineering-Midterm-Project/Airflow_EMR/create_airflow_keys.py
     ```
   - Then paste the print outputs to the ```.env``` file in the ```Airflow_EMR``` folder
-  - Edit the fields in the ```config_file.toml``` file in the main folder
+  - Edit the fields in the ```config_file.toml``` file in ```/home/ubuntu/Data-Engineering-Midterm-Project/```
 ### 5. Create AWS artifacts
   - In the ```Create_AWS_Artifacts``` folder,
   - Run the following commands
