@@ -40,7 +40,7 @@ Below image outlines how to use the files I've provided so that you could use it
     - Port 8080 from Sources as MY IP
     - Port 8088 from Sources as MY IP
   - Attach this security group to your EC2 instance
-  - Upload the files in this repository into your EC2 folder
+  - In /home/ubuntu/ folder, run ```git clone https://github.com/lingnath/Data-Engineering-Midterm-Project.git```
   - Make sure the role/instance profile has ```AmazonSSMManagedInstanceCore``` policy, with trust relationships being the following:
 ```json
 {
@@ -57,8 +57,8 @@ Below image outlines how to use the files I've provided so that you could use it
 }
  ```
 ### 3. Install Packages in EC2 Ubuntu
-  - Run ```chmod +x <script>``` for each of the .sh scripts in the Software_Installations folder
-  - Run the scripts within the Software_Installations folder in this order: ```./install_packages.sh``` -> ```./install_docker.sh``` -> ```./install_docker_compose.sh```
+  - Run ```chmod +x <script>``` for each of the .sh scripts in the ```Software_Installations``` folder
+  - Run the scripts within the ```Software_Installations``` folder in this order: ```./install_packages.sh``` -> ```./install_docker.sh``` -> ```./install_docker_compose.sh```
   - If you haven't done so already, run "aws configure" in the command line so that you can run the scripts on the EC2 command line without there being permission errors. Enter the following:
     ```
     - AWS Access Key ID [None]: {access key}
@@ -84,8 +84,8 @@ Below image outlines how to use the files I've provided so that you could use it
         ```
       - To generate the ```AIRFLOW__WEBSERVER__SECRET_KEY``` and ```AIRFLOW__CORE__FERNET_KEY```, run
       - ```bash
-        source /home/ubuntu/Software_Installations/python_env/bin/activate
-        python3 /home/ubuntu/Airflow_EMR/create_airflow_keys.py
+        source /home/ubuntu/Data-Engineering-Midterm-Project/Software_Installations/python_env/bin/activate
+        python3 /home/ubuntu/Data-Engineering-Midterm-Project/Airflow_EMR/create_airflow_keys.py
         ```
       - Then paste the print outputs to the ```.env``` file in the ```Airflow_EMR``` subfolder
     - Edit the fields in the ```config_file.toml``` file in the main folder
@@ -94,7 +94,7 @@ Below image outlines how to use the files I've provided so that you could use it
   - Run the following commands
   - ```bash
     chmod +x create_aws_artifacts.sh
-    source /home/ubuntu/Software_Installations/python_env/bin/activate
+    source /home/ubuntu/Data-Engineering-Midterm-Project/Software_Installations/python_env/bin/activate
     ```
   - Then run ```./create_aws_artifacts.sh```
   - To ensure that your Lambda function can use SES, please check your email for the email address that you put in under sender field in the config_file.toml file and verify it for the confirmation email that AWS sent. The confirmation email should from no-reply-aws@amazon.com with the following subject line "Amazon Web Services – Email Address Verification Request in region {region you specified under the toml file}"
@@ -116,7 +116,7 @@ Below image outlines how to use the files I've provided so that you could use it
   - Run the following commands
   - ```bash
     chmod +x remove_aws_artifacts.sh
-    source /home/ubuntu/Software_Installations/python_env/bin/activate
+    source /home/ubuntu/Data-Engineering-Midterm-Project/Software_Installations/python_env/bin/activate
     ```
   - Then run ```./remove_aws_artifacts.sh```
 ### 9. EDA (Optional)
@@ -138,12 +138,12 @@ This is not a traditional ETL process because the data is static and DOES NOT ge
 
 ### Running ETL Job
 There are 3 options. 
-1. We can run ```start_ec2_instance.py``` manually in the EC2 on ```/home/ubuntu``` directory where you will need to run the following:
+1. We can run ```start_ec2_instance.py``` manually in the EC2 on ```/home/ubuntu/Data-Engineering-Midterm-Project/``` directory where you will need to run the following:
 ```bash
-source /home/ubuntu/Software_Installations/python_env/bin/activate
+source /home/ubuntu/Data-Engineering-Midterm-Project/Software_Installations/python_env/bin/activate
 python3 start_ec2_instance.py
 ```
-2. Run ```start_ec2_instance.py``` locally on ```/home/ubuntu``` directory as long as you have the ```.env```, ```config_file.toml``` files in the same directory, and on your Linux CLI, you will need to run the following:
+2. Run ```start_ec2_instance.py``` locally on ```/home/ubuntu/Data-Engineering-Midterm-Project/``` directory as long as you have the ```.env```, ```config_file.toml``` files in the same directory, and on your Linux CLI, you will need to run the following:
 ```bash
 sudo apt-get install python3.12 -y
 sudo apt install python3.12-venv
