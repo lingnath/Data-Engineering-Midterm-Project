@@ -40,7 +40,7 @@ Below image outlines how to use the files I've provided so that you could use it
     - Port 8080 from Sources as MY IP
     - Port 8088 from Sources as MY IP
   - Attach this security group to your EC2 instance
-  - In /home/ubuntu/ folder, run ```git clone https://github.com/lingnath/Data-Engineering-Midterm-Project.git```
+  - In ```/home/ubuntu/``` folder, run ```git clone https://github.com/lingnath/Data-Engineering-Midterm-Project.git```
   - Make sure the role/instance profile has ```AmazonSSMManagedInstanceCore``` policy, with trust relationships being the following:
 ```json
 {
@@ -67,7 +67,7 @@ Below image outlines how to use the files I've provided so that you could use it
     - Default output format [None]: json
     ```
 ### 4. Set up config files
-  - Create a ```.env``` file both in the main folder and the Airflow_EMR subfolder.
+  - Create a ```.env``` file both in the main folder and the ```Airflow_EMR``` folder.
       - For the ```.env``` file in the main folder, the structure looks like this:
         ```
         - ACCESS_KEY=''
@@ -75,7 +75,7 @@ Below image outlines how to use the files I've provided so that you could use it
         - ec2_instance_id=''
         ```
       - **NOTE**: If you feel the Airflow username and password are insecure, after Airflow is set up and the Lambda Function is created, please feel free to change the Airflow username and password for the above .env file in **both the AWS CLI and Lambda Function, as well as the username and password in the Airflow UI**. **But please make sure the changes you've made in all places are identical** as the Lambda function will not be able to call the Airflow DAG if the changes aren't the same.
-      - For the .env file in the Airflow_EMR subfolder, the structure looks like this:
+      - For the .env file in the ```Airflow_EMR``` folder, the structure looks like this:
         ```
         - AIRFLOW__WEBSERVER__SECRET_KEY=
         - AIRFLOW__CORE__FERNET_KEY=
@@ -87,7 +87,7 @@ Below image outlines how to use the files I've provided so that you could use it
         source /home/ubuntu/Data-Engineering-Midterm-Project/Software_Installations/python_env/bin/activate
         python3 /home/ubuntu/Data-Engineering-Midterm-Project/Airflow_EMR/create_airflow_keys.py
         ```
-      - Then paste the print outputs to the ```.env``` file in the ```Airflow_EMR``` subfolder
+      - Then paste the print outputs to the ```.env``` file in the ```Airflow_EMR``` folder
     - Edit the fields in the ```config_file.toml``` file in the main folder
 ### 5. Create AWS artifacts
   - In the ```Create_AWS_Artifacts``` folder,
@@ -99,7 +99,7 @@ Below image outlines how to use the files I've provided so that you could use it
   - Then run ```./create_aws_artifacts.sh```
   - To ensure that your Lambda function can use SES, please check your email for the email address that you put in under sender field in the config_file.toml file and verify it for the confirmation email that AWS sent. The confirmation email should from no-reply-aws@amazon.com with the following subject line "Amazon Web Services – Email Address Verification Request in region {region you specified under the toml file}"
 ### 6. Setup and Run Airflow
-  - Please go into the Airflow_EMR folder, run ```chmod +x build_airflow_in_docker.sh``` then run ```./build_airflow_in_docker.sh```
+  - Please go into the ```Airflow_EMR``` folder, run ```chmod +x build_airflow_in_docker.sh``` then run ```./build_airflow_in_docker.sh```
   - Create a port forwarding connection for port 8080 (optional if you want to access locally)
   - In your browser url, enter ```{EC2 Public IPv4 address}:8080```. This will lead you to the Airflow UI
   - Go to your DAG in the Airflow UI and run ```Trigger DAG```
@@ -112,7 +112,7 @@ Below image outlines how to use the files I've provided so that you could use it
   - Add the necessary datasets in Superset
   - Build dashboards to your heart's content
 ### 8. Remove AWS Artifacts (Optional)
-  - Once you are done with the entire project, go into the ```Remove_AWS_Artifacts folder```.
+  - Once you are done with the entire project, go into the ```Remove_AWS_Artifacts``` folder.
   - Run the following commands
   - ```bash
     chmod +x remove_aws_artifacts.sh
