@@ -68,27 +68,27 @@ Below image outlines how to use the files I've provided so that you could use it
     ```
 ### 4. Set up config files
   - Create a ```.env``` file both in the main folder and the ```Airflow_EMR``` folder.
-      - For the ```.env``` file in the main folder, the structure looks like this:
-        ```
-        - ACCESS_KEY=''
-        - SECRET_KEY=''
-        - ec2_instance_id=''
-        ```
-      - **NOTE**: If you feel the Airflow username and password are insecure, after Airflow is set up and the Lambda Function is created, please feel free to change the Airflow username and password for the above .env file in **both the AWS CLI and Lambda Function, as well as the username and password in the Airflow UI**. **But please make sure the changes you've made in all places are identical** as the Lambda function will not be able to call the Airflow DAG if the changes aren't the same.
-      - For the .env file in the ```Airflow_EMR``` folder, the structure looks like this:
-        ```
-        - AIRFLOW__WEBSERVER__SECRET_KEY=
-        - AIRFLOW__CORE__FERNET_KEY=
-        - AIRFLOW_UID=1000
-        - AIRFLOW_GID=0
-        ```
-      - To generate the ```AIRFLOW__WEBSERVER__SECRET_KEY``` and ```AIRFLOW__CORE__FERNET_KEY```, run
-      - ```bash
-        source /home/ubuntu/Data-Engineering-Midterm-Project/Software_Installations/python_env/bin/activate
-        python3 /home/ubuntu/Data-Engineering-Midterm-Project/Airflow_EMR/create_airflow_keys.py
-        ```
-      - Then paste the print outputs to the ```.env``` file in the ```Airflow_EMR``` folder
-    - Edit the fields in the ```config_file.toml``` file in the main folder
+  - For the ```.env``` file in the main folder, the structure looks like this:
+    ```
+    - ACCESS_KEY=''
+    - SECRET_KEY=''
+    - ec2_instance_id=''
+    ```
+  - **NOTE**: If you feel the Airflow username and password are insecure, after Airflow is set up and the Lambda Function is created, please feel free to change the Airflow username and password for the above .env file in **both the AWS CLI and Lambda Function, as well as the username and password in the Airflow UI**. **But please make sure the changes you've made in all places are identical** as the Lambda function will not be able to call the Airflow DAG if the changes aren't the same.
+  - For the .env file in the ```Airflow_EMR``` folder, the structure looks like this:
+    ```
+    - AIRFLOW__WEBSERVER__SECRET_KEY=
+    - AIRFLOW__CORE__FERNET_KEY=
+    - AIRFLOW_UID=1000
+    - AIRFLOW_GID=0
+    ```
+  - To generate the ```AIRFLOW__WEBSERVER__SECRET_KEY``` and ```AIRFLOW__CORE__FERNET_KEY```, run
+  - ```bash
+    source /home/ubuntu/Data-Engineering-Midterm-Project/Software_Installations/python_env/bin/activate
+    python3 /home/ubuntu/Data-Engineering-Midterm-Project/Airflow_EMR/create_airflow_keys.py
+    ```
+  - Then paste the print outputs to the ```.env``` file in the ```Airflow_EMR``` folder
+  - Edit the fields in the ```config_file.toml``` file in the main folder
 ### 5. Create AWS artifacts
   - In the ```Create_AWS_Artifacts``` folder,
   - Run the following commands
