@@ -11,8 +11,7 @@ if [ ! -d $log_dir ]; then
 fi
 
 LOG_FILE="${log_dir}/${SHELL_SCRIPT_NAME}_${filenametime}.log"
-# exec > >(tee "$LOG_FILE") 2>&1
-exec > "$LOG_FILE" 2>&1
+exec > >(tee "$LOG_FILE") 2>&1
 cd "Create_AWS_Artifacts/"
 
 # Each section below consists of running a certain script and creating a new artifact. 
